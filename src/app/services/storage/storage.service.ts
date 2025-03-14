@@ -9,12 +9,12 @@ export class StorageService {
   }
 
   saveToken(token: string) {
-    //this.removeToken();
+    this.removeToken();
     window.localStorage.setItem("token", token);
   }
 
   saveUserInfo(user: any) {
-    //this.removeUserInfo();
+    this.removeUserInfo();
     window.localStorage.setItem("userInfo", JSON.stringify(user));
   }
 

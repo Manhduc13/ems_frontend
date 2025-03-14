@@ -63,8 +63,10 @@ export class AppComponent {
     this.token = this.storageService.getToken() ?? "";
     if (this.token) {
       this.authService.validateToken(this.token).subscribe((res) => {
-        this.isLogin = res === "valid"; // Nếu token hợp lệ, set isLogin = true
-        if (!this.isLogin) {
+        if(res.verify){
+          this.isLogin = true;
+        } else {
+          this.isLogin = false;
           this.storageService.removeToken();
           this.storageService.removeUserInfo();
         }

@@ -52,7 +52,7 @@ export class EmployeeService {
     });
   }
 
-  delete(id: number){
+  delete(id: number): Observable<any>{
     return this.http.delete(`${BASE_URL}/delete/${id}`, {
       headers: this.createAuthorizationHeader()
     });

@@ -82,19 +82,14 @@ export class EmployeeCreateUpdateComponent {
 
   submitForm() {
     if (this.createUpdateForm.valid) {
-      const formData = {
-        ...this.createUpdateForm.value,
-        roleIds: this.createUpdateForm.value.roleIds
-      };
-
       if (this.employee) {
-        this.employeeService.update(this.employee.id, formData).subscribe(() => {
+        this.employeeService.update(this.employee.id, this.createUpdateForm.value).subscribe(() => {
           this.toastService.showToast('Employee updated successfully', 'success');
           this.refresh.emit();
           this.close.emit();
         });
       } else {
-        this.employeeService.create(formData).subscribe(() => {
+        this.employeeService.create(this.createUpdateForm.value).subscribe(() => {
           this.toastService.showToast('Employee added successfully', 'success');
           this.refresh.emit();
           this.close.emit();

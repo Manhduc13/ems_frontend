@@ -83,13 +83,12 @@ export class EmployeeListComponent {
   }
 
   delete(id: number) {
-    this.employeeService.delete(id).subscribe({
-      next: () => {
-        this.toastService.showToast('Employee deleted successfully!', 'success');
+    this.employeeService.delete(id).subscribe((res) => {
+      if(res.delete) {
+        this.toastService.showToast("Delete employee successfully", "success");
         this.getAll();
-      },
-      error: (err) => {
-        console.error('Error deleting employee:', err);
+      } else {
+        this.toastService.showToast("Delete employee failed", "error");
       }
     });
   }

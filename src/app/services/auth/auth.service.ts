@@ -9,7 +9,7 @@ const BASE_URL = "http://localhost:8080/api/auth";
 })
 export class AuthService {
   
-  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
 
   constructor(private http: HttpClient) {}
 
@@ -27,5 +27,9 @@ export class AuthService {
 
   setIsLoggedIn(isLoggedIn: boolean) {
     this.isLoggedInSubject.next(isLoggedIn);
+  }
+
+  private hasToken(): boolean {
+    return localStorage.getItem("token") !== null; // ✅ Kiểm tra token có tồn tại hay không
   }
 }
