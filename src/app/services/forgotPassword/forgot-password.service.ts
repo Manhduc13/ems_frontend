@@ -19,7 +19,7 @@ export class ForgotPasswordService {
     return this.http.get(BASE_URL + "/verify-token/" + token);
   }
 
-  changePassword(request: any):Observable<any> {
+  changePassword(request: any): Observable<any> {
     return this.http.post(BASE_URL + "/change-password", request);
   }
 }

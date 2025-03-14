@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
+import { Observable } from 'rxjs';
 
 const BASE_URL = "http://localhost:8080/api/employees";
 
@@ -14,31 +15,38 @@ export class EmployeeService {
     private storageService: StorageService
   ) { }
 
-  getAll(){
+  searchWithFilter(keyword: any): Observable<any> {
+    return this.http.get(BASE_URL + "/search", {
+      params: keyword,
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
+  getAll(): Observable<any>{
     return this.http.get(BASE_URL, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  getById(id: number){
+  getById(id: number): Observable<any>{
     return this.http.get(`${BASE_URL}/${id}`, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  create(request: any){
+  create(request: any): Observable<any>{
     return this.http.post(BASE_URL + "/create", request, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  update(id: number, request: any){
+  update(id: number, request: any): Observable<any>{
     return this.http.put(BASE_URL + "/update/" + id, request, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  banned(id: number){
+  banned(id: number): Observable<any>{
     return this.http.put(`${BASE_URL}/banned/${id}`, null, {
       headers: this.createAuthorizationHeader()
     });

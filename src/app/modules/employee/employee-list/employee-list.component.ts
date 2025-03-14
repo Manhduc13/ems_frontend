@@ -1,8 +1,10 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component, signal, SimpleChanges } from '@angular/core';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { SharedModule } from '../../shared/shared.module';
 import { EmployeeCreateUpdateComponent } from "../employee-create-update/employee-create-update.component";
 import { ToastService } from '../../../services/toast/toast.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-employee-list',
@@ -16,19 +18,54 @@ export class EmployeeListComponent {
   showCreateUpdateForm: boolean = false;
   selectedEmployee: any = null;
 
+  keyword: any;
+
+  searchForm!: FormGroup;
+
+  columns: String[] = ['Name', 'Phone', 'Email', 'Role', 'Status', 'Actions'];
+
   constructor(
+    private fb: FormBuilder,
     private employeeService: EmployeeService,
     private toastService: ToastService,
   ) { }
 
   ngOnInit() {
+    this.initializeSearchForm();
     this.getAll();
   }
 
-  getAll() {
-    this.employeeService.getAll().subscribe((data: any) => {
-      this.employees = data;
+  initializeSearchForm() {
+    this.searchForm = this.fb.group({
+      keyword: [null]
     });
+  }
+
+  getAll() {
+    let filters = this.searchForm.value;
+
+    if (!filters.keyword) {
+      filters = {};
+    }
+
+    this.employeeService.searchWithFilter(filters).subscribe({
+      next: (res: any) => {
+        console.log(res.data);
+        this.employees = res.data;
+      },
+      error: (err) => {
+        console.error("Error fetching employees:", err);
+      }
+    });
+  }
+
+  search() {
+    this.getAll();
+  }
+
+  reset() {
+    this.searchForm.reset(); // Reset form
+    this.getAll();           // Gọi API ngay sau khi reset
   }
 
   toCreateForm() {
