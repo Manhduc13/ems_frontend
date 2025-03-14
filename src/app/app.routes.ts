@@ -14,5 +14,5 @@ export const routes: Routes = [
     {path: 'contact', component: ContactComponent},
     {path: 'login', component: LoginComponent},
     {path: 'employees', component: EmployeeListComponent},
-    {path: 'forgot-password', component: ForgotPasswordComponent},
+    {path: 'forgot-password/:email/:token', component: ForgotPasswordComponent},
 ];
