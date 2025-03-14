@@ -5,17 +5,19 @@ import { EmployeeCreateUpdateComponent } from "../employee-create-update/employe
 import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { filter } from 'rxjs';
+import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [SharedModule, EmployeeCreateUpdateComponent],
+  imports: [SharedModule, EmployeeCreateUpdateComponent, EmployeeDetailComponent],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.css'
 })
 export class EmployeeListComponent {
   employees: any;
   showCreateUpdateForm: boolean = false;
+  showDetailPage: boolean = false;
   selectedEmployee: any = null;
 
   keyword: any;
@@ -64,17 +66,29 @@ export class EmployeeListComponent {
   }
 
   reset() {
-    this.searchForm.reset(); // Reset form
-    this.getAll();           // Gọi API ngay sau khi reset
+    this.searchForm.reset(); 
+    this.getAll();         
+  }
+
+  viewDetail(employee: any) {
+    this.selectedEmployee = employee;
+    this.showCreateUpdateForm = false;
+    this.showDetailPage = true;
+  }
+
+  closeDetailPage() {
+    this.showDetailPage = false;
   }
 
   toCreateForm() {
     this.selectedEmployee = null;
+    this.showDetailPage = false;
     this.showCreateUpdateForm = true;
   }
 
   toEditForm(employee: any) {
     this.selectedEmployee = employee;
+    this.showDetailPage = false;
     this.showCreateUpdateForm = true;
   }
 

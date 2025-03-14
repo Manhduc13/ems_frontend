@@ -31,7 +31,7 @@
                 <td>
                     <div class="flex items-center">
                         <div class="flex-shrink-0 h-10 w-10">
-                            <img class="h-10 w-10 rounded-full" src="https://i.pravatar.cc/150?img=1" alt="">
+                            <img class="h-10 w-10 rounded-full" src="https://i.pravatar.cc/150?img=1" alt="avatar">
                         </div>
                         <div class="ml-4">
                             <div class="text-sm font-medium text-gray-900">
@@ -57,7 +57,7 @@
                     </span>
                 </td>
                 <td class="space-x-3">
-                    <i class="fas fa-eye text-green-500 hover:text-green-700"></i>
+                    <i class="fas fa-eye text-green-500 hover:text-green-700" (click)="viewDetail(employee)"></i>
                     <i class="fas fa-edit text-indigo-600 hover:text-indigo-900" (click)="toEditForm(employee)"></i>
                     <i class="fas fa-trash text-red-600 hover:text-red-900" (click)="delete(employee.id)"></i>
                 </td>
@@ -65,10 +65,15 @@
         </tbody>
     </table>
     <!-- Paginantion -->
-    
+
     <!-- Create/Update -->
     <div *ngIf="showCreateUpdateForm" class="mt-6">
         <app-employee-create-update [employee]="selectedEmployee" (close)="closeForm()" (refresh)="getAll()">
         </app-employee-create-update>
+    </div>
+    <!--View Employee Detail -->
+    <div *ngIf="showDetailPage" class="mt-6">
+        <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailPage()"
+            (refresh)="getAll()"></app-employee-detail>
     </div>
 </div>

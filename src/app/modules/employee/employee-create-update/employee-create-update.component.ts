@@ -8,7 +8,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 @Component({
   selector: 'app-employee-create-update',
   standalone: true,
-  imports: [SharedModule,],
+  imports: [SharedModule],
   templateUrl: './employee-create-update.component.html',
   styleUrl: './employee-create-update.component.css'
 })

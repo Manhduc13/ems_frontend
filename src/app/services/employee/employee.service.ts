@@ -46,8 +46,8 @@ export class EmployeeService {
     });
   }
 
-  banned(id: number): Observable<any>{
-    return this.http.put(`${BASE_URL}/banned/${id}`, null, {
+  changeStatus(id: number): Observable<any>{
+    return this.http.put(`${BASE_URL}/changeStatus/${id}`, null, {
       headers: this.createAuthorizationHeader()
     });
   }
