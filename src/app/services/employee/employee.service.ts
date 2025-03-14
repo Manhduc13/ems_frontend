@@ -15,27 +15,39 @@ export class EmployeeService {
   ) { }
 
   getAll(){
-    return this.http.get(BASE_URL);
+    return this.http.get(BASE_URL, {
+      headers: this.createAuthorizationHeader()
+    });
   }
 
   getById(id: number){
-    return this.http.get(`${BASE_URL}/${id}`);
+    return this.http.get(`${BASE_URL}/${id}`, {
+      headers: this.createAuthorizationHeader()
+    });
   }
 
   create(request: any){
-    return this.http.post(BASE_URL + "/create", request);
+    return this.http.post(BASE_URL + "/create", request, {
+      headers: this.createAuthorizationHeader()
+    });
   }
 
   update(id: number, request: any){
-    return this.http.put(BASE_URL + "/update/" + id, request);
+    return this.http.put(BASE_URL + "/update/" + id, request, {
+      headers: this.createAuthorizationHeader()
+    });
   }
 
   banned(id: number){
-    return this.http.put(`${BASE_URL}/banned/${id}`, null);
+    return this.http.put(`${BASE_URL}/banned/${id}`, null, {
+      headers: this.createAuthorizationHeader()
+    });
   }
 
   delete(id: number){
-    return this.http.delete(`${BASE_URL}/delete/${id}`);
+    return this.http.delete(`${BASE_URL}/delete/${id}`, {
+      headers: this.createAuthorizationHeader()
+    });
   }
 
   createAuthorizationHeader(): HttpHeaders {

@@ -5,7 +5,6 @@ import { HomeComponent } from './modules/common/home/home.component';
 import { AboutComponent } from './modules/common/about/about.component';
 import { ServiceComponent } from './modules/common/service/service.component';
 import { ContactComponent } from './modules/common/contact/contact.component';
-import { EmployeeCreateUpdateComponent } from './modules/employee/employee-create-update/employee-create-update.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -13,6 +12,5 @@ export const routes: Routes = [
     {path: 'services', component: ServiceComponent},
     {path: 'contact', component: ContactComponent},
     {path: 'login', component: LoginComponent},
-    {path: 'employees', component: EmployeeListComponent},
-    {path: 'employees/create', component: EmployeeCreateUpdateComponent},
+    {path: 'employees', component: EmployeeListComponent}, 
 ];
