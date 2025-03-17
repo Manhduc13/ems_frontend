@@ -47,8 +47,6 @@ export class AppComponent {
     });
 
     this.isAuthenticated();
-    console.log(this.isLogin);
-    
   }
 
   logout(){

@@ -21,6 +21,10 @@ export class EmployeeCreateUpdateComponent {
   roleIds: Number[] = [];
   selectedRoles: any[] = [];
 
+  selectedFile!: File;
+  imagePreview!: string | ArrayBuffer | null;
+  imageBase64!: string | null;
+
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -48,7 +52,19 @@ export class EmployeeCreateUpdateComponent {
       address: [this.employee?.address || null],
       gender: [this.employee?.gender ?? null, Validators.required],
       roleIds: [this.employee?.roles.map((role: any) => role.id) || [], Validators.required],
+      avatar: [this.employee?.avatar || '']
     });
+
+    if (this.employee?.avatar) {
+      // Kiểm tra xem avatar có phải Base64 hay là URL
+      if (this.employee.avatar.startsWith('/9j/') || this.employee.avatar.startsWith('iVBOR')) {
+        this.imagePreview = `data:image/png;base64,${this.employee.avatar}`;
+      } else {
+        this.imagePreview = this.employee.avatar; // Nếu là URL, dùng luôn
+      }
+    } else {
+      this.imagePreview = null;
+    }
 
     this.getAllRoles();
   }
@@ -82,22 +98,72 @@ export class EmployeeCreateUpdateComponent {
 
   submitForm() {
     if (this.createUpdateForm.valid) {
+
+      const employeeData = {
+        firstName: this.createUpdateForm.get('firstName')?.value,
+        lastName: this.createUpdateForm.get('lastName')?.value,
+        phone: this.createUpdateForm.get('phone')?.value,
+        email: this.createUpdateForm.get('email')?.value,
+        gender: this.createUpdateForm.get('gender')?.value,
+        address: this.createUpdateForm.get('address')?.value || '',
+        dob: this.createUpdateForm.get('dob')?.value,
+        roleIds: this.createUpdateForm.get('roleIds')?.value,
+        avatar: this.imageBase64 || this.createUpdateForm.get('avatar')?.value, // base64 hoặc URL
+      };
+
       if (this.employee) {
-        this.employeeService.update(this.employee.id, this.createUpdateForm.value).subscribe(() => {
+        this.employeeService.update(this.employee.id, employeeData).subscribe(() => {
           this.toastService.showToast('Employee updated successfully', 'success');
           this.refresh.emit();
           this.close.emit();
+        }, (error) => {
+          console.error('Lỗi khi cập nhật:', error);
+          this.toastService.showToast('Update failed!', 'error');
         });
       } else {
-        this.employeeService.create(this.createUpdateForm.value).subscribe(() => {
+        this.employeeService.create(employeeData).subscribe(() => {
           this.toastService.showToast('Employee added successfully', 'success');
           this.refresh.emit();
           this.close.emit();
+        }, (error) => {
+          console.error('Lỗi khi tạo mới:', error);
+          this.toastService.showToast('Creation failed!', 'error');
         });
       }
 
     } else {
-      console.error('Form is invalid:', this.createUpdateForm);
+      this.toastService.showToast('Form is invalid', 'error');
+    }
+  }
+
+  onFileSelected(event: any) {
+    if (event && event.target && event.target.files) {
+      this.selectedFile = event.target.files[0];
+
+      if (this.selectedFile.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagePreview = reader.result;
+          this.imageBase64 = (reader.result as string).split(',')[1]; // Chỉ lấy phần Base64
+        };
+        reader.readAsDataURL(this.selectedFile);
+      } else {
+        this.toastService.showToast("Selected file is not an image or no file selected", "error");
+      }
+    } else {
+      this.toastService.showToast("No file selected or event is not valid", "error");
+    }
+  }
+
+  previewImage() {
+    if (this.selectedFile && this.selectedFile.type.startsWith('image/')) { // Check if the file is an image
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    } else {
+      this.toastService.showToast("Selected file is not an image or no file selected", "error");
     }
   }
 }

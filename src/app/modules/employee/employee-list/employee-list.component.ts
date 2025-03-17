@@ -52,8 +52,12 @@ export class EmployeeListComponent {
 
     this.employeeService.searchWithFilter(filters).subscribe({
       next: (res: any) => {
-        console.log(res.data);
-        this.employees = res.data;
+        //this.employees = res.data;
+        this.employees = [];
+        res.data.forEach((element: { processedAvatar: string; avatar: string; }) => {
+          element.processedAvatar = 'data:image/jpg;base64,' + element.avatar;
+          this.employees.push(element);
+        });
       },
       error: (err) => {
         console.error("Error fetching employees:", err);

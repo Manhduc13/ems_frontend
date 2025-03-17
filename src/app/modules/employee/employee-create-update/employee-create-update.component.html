@@ -10,6 +10,21 @@
         </button>
     </div>
     <form class="w-full flex flex-col gap-4" [formGroup]="createUpdateForm">
+        <div class="flex items-center space-x-6 ">
+            <div class="shrink-0">
+                <img id='preview_img' class="h-16 w-16 object-cover rounded-full" [src]="imagePreview" alt="profile" [ngClass]="!imagePreview ? 'hidden' : ''" />
+            </div>
+            <label class="block">
+                <span class="sr-only">Choose profile photo</span>
+                <input type="file" (change)="onFileSelected($event)" class="block w-full text-sm text-slate-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-violet-50 file:text-violet-700
+                hover:file:bg-violet-100
+              " />
+            </label>
+        </div>
 
         <div class="w-full flex flex-row justify-between items-center">
             <div class="w-[49%] flex items-start flex-col justify-start">

@@ -22,37 +22,37 @@ export class EmployeeService {
     });
   }
 
-  getAll(): Observable<any>{
+  getAll(): Observable<any> {
     return this.http.get(BASE_URL, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  getById(id: number): Observable<any>{
+  getById(id: number): Observable<any> {
     return this.http.get(`${BASE_URL}/${id}`, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  create(request: any): Observable<any>{
+  create(request: any): Observable<any> {
     return this.http.post(BASE_URL + "/create", request, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  update(id: number, request: any): Observable<any>{
-    return this.http.put(BASE_URL + "/update/" + id, request, {
+  update(id: number, request: any): Observable<any> {
+    return this.http.put(`${BASE_URL}/update/${id}`, request, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  changeStatus(id: number): Observable<any>{
+  changeStatus(id: number): Observable<any> {
     return this.http.put(`${BASE_URL}/changeStatus/${id}`, null, {
       headers: this.createAuthorizationHeader()
     });
   }
 
-  delete(id: number): Observable<any>{
+  delete(id: number): Observable<any> {
     return this.http.delete(`${BASE_URL}/delete/${id}`, {
       headers: this.createAuthorizationHeader()
     });
