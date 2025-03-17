@@ -10,7 +10,7 @@
             <div class="flex items-center space-x-6">
                 <div class="shrink-0">
                     <img id='preview_img' class="h-25 w-25 object-cover rounded-full"
-                        [src]="imagePreview || employee?.avatar || 'https://res.cloudinary.com/ddfqvag5q/image/upload/v1742184227/default_ncpebq.png'" alt="img" />
+                        [src]="imagePreview ?? 'https://res.cloudinary.com/ddfqvag5q/image/upload/v1742184227/default_ncpebq.png'" alt="img" />
                 </div>
                 <label class="block">
                     <span class="sr-only">Choose profile photo</span>

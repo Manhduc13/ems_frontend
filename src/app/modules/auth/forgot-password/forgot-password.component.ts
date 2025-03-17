@@ -109,11 +109,8 @@ export class ForgotPasswordComponent {
 
   resetPassword() {
     if (this.newPasswordForm.valid) {
-      console.log(this.newPasswordForm.value);
-      
       this.forgotPasswordService.changePassword(this.newPasswordForm.value).subscribe({
         next: (res) => {
-          console.log("Reset password success:", res);
           this.toastService.showToast("Reset password successfully", "success");
           this.backToLogin();
         },

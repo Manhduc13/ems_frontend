@@ -23,7 +23,6 @@ export class EmployeeCreateUpdateComponent {
 
   selectedFile!: File;
   imagePreview!: string | ArrayBuffer | null;
-  imageBase64!: string | null;
 
   isLoading: boolean = false;
 
@@ -103,27 +102,27 @@ export class EmployeeCreateUpdateComponent {
       this.isLoading = true;
       let formData = this.createUpdateForm.value;
 
-    if (this.selectedFile) {
-      // upload new image then update
-      this.employeeService.uploadImage(this.selectedFile).subscribe(
-        (response) => {
-          console.log("Uploaded image URL:", response.url);
-          // add avatar url to form
-          formData.avatar = response.url;
-          // call api update
-          this.saveEmployee(formData);
-        },
-        (error) => {
-          console.error('Lỗi khi upload ảnh:', error);
-          this.toastService.showToast('Upload image failed!', 'error');
-          this.isLoading = false;
-        }
-      );
-    } else {
-      // update with old avatar
-      formData.avatar = this.employee?.avatar || ''; 
-      this.saveEmployee(formData);
-    }
+      if (this.selectedFile) {
+        // upload new image then update
+        this.employeeService.uploadImage(this.selectedFile).subscribe(
+          (response) => {
+            console.log("Uploaded image URL:", response.url);
+            // add avatar url to form
+            formData.avatar = response.url;
+            // call api update
+            this.saveEmployee(formData);
+          },
+          (error) => {
+            console.error('Upload error:', error);
+            this.toastService.showToast('Upload image failed!', 'error');
+            this.isLoading = false;
+          }
+        );
+      } else {
+        // update with old avatar
+        formData.avatar = this.employee?.avatar || '';
+        this.saveEmployee(formData);
+      }
     } else {
       this.toastService.showToast('Form is invalid', 'error');
     }
@@ -131,26 +130,30 @@ export class EmployeeCreateUpdateComponent {
 
   saveEmployee(employeeData: any) {
     if (this.employee) {
-      this.employeeService.update(this.employee.id, employeeData).subscribe(() => {
-        this.toastService.showToast('Employee updated successfully', 'success');
-        this.refresh.emit();
-        this.close.emit();
-        this.isLoading = false;
-      }, (error) => {
-        console.error('Update errors:', error);
-        this.toastService.showToast('Update failed!', 'error');
-        this.isLoading = false;
+      this.employeeService.update(this.employee.id, employeeData).subscribe({
+        next: (res) => {
+          this.toastService.showToast('Employee updated successfully', 'success');
+          this.refresh.emit();
+          this.close.emit();
+          this.isLoading = false;
+        }, error: (err) => {
+          console.error('Update errors:', err);
+          this.toastService.showToast('Update failed!', 'error');
+          this.isLoading = false;
+        }
       });
     } else {
-      this.employeeService.create(employeeData).subscribe(() => {
-        this.toastService.showToast('Employee added successfully', 'success');
-        this.refresh.emit();
-        this.close.emit();
-        this.isLoading = false;
-      }, (error) => {
-        console.error('Create errors:', error);
-        this.toastService.showToast('Creation failed!', 'error');
-        this.isLoading = false;
+      this.employeeService.create(employeeData).subscribe({
+        next: (res) => {
+          this.toastService.showToast('Employee added successfully', 'success');
+          this.refresh.emit();
+          this.close.emit();
+          this.isLoading = false;
+        }, error: (err) => {
+          console.error('Create errors:', err);
+          this.toastService.showToast('Creation failed!', 'error');
+          this.isLoading = false;
+        }
       });
     }
   }
@@ -162,7 +165,7 @@ export class EmployeeCreateUpdateComponent {
       if (this.selectedFile.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = () => {
-          this.imagePreview = reader.result; // Hiển thị ảnh trước khi upload
+          this.imagePreview = reader.result;
         };
         reader.readAsDataURL(this.selectedFile);
       } else {

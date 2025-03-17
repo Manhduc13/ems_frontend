@@ -59,6 +59,12 @@ export class EmployeeService {
     });
   }
 
+  changePassword(id: number, request: any): Observable<any> {
+    return this.http.put(`${BASE_URL}/changePassword/${id}`, request, {
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
   uploadImage(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('image', file);
