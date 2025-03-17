@@ -30,7 +30,7 @@ export class EmployeeService {
   }
 
   getById(id: number): Observable<any> {
-    return this.http.get(`${BASE_URL}/${id}`, {
+    return this.http.get(`${BASE_URL}/getById/${id}`, {
       headers: this.createAuthorizationHeader()
     });
   }

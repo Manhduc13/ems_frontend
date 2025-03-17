@@ -1,0 +1,78 @@
+<div class="h-screen duration-200">
+    <div class="w-full">
+        <div class="bg-gray-800 overflow-hidden duration-200">
+            <div class="relative h-120">
+                <img src="https://res.cloudinary.com/djv4xa6wu/image/upload/v1735722161/AbhirajK/Abhirajk2.webp"
+                    alt="cover" class="w-full h-full object-cover">
+                <div class="absolute -bottom-12 left-6">
+                    <img [src]="employee?.avatar" alt="Profile"
+                        class="w-40 h-40 rounded-xl object-cover border-4 border-white dark:border-gray-800 shadow-lg">
+                </div>
+            </div>
+
+            <div class="pt-16 px-6 pb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{employee?.username}} -
+                            {{employee?.firstName}} {{employee?.lastName}}</h1>
+                        <p class="text-purple-600 dark:text-purple-400">Node.js Developer & Frontend Expert</p>
+                    </div>
+                </div>
+
+                <p class="mt-6 text-gray-600 dark:text-gray-300">
+                    Hi, I'm a passionate developer with expertise in Node.js, React, and Tailwind CSS. I love building
+                    efficient and scalable web applications.
+                </p>
+
+                <div class="mt-6">
+                    <h2 class="text-lg font-semibold text-white mb-3">Roles</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <span *ngFor="let role of employee?.roles"
+                            class="px-3 py-1 bg-purple-900 text-purple-300 rounded-lg text-sm font-medium">
+                            {{role?.name}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Date of Birth</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-purple-900 text-purple-300 rounded-lg text-sm font-medium">
+                            {{ employee?.dob | date: 'dd / MM / yyyy' }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="mt-6">
+                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Contact</h2>
+                    <div class="flex flex-col space-y-3">
+                        <a [href]="'mailto:' + employee?.email"
+                            class="inline-flex items-center text-purple-600 dark:text-purple-400 hover:underline">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            {{employee?.email}}
+                        </a>
+                        <a [href]="'tel:' + employee?.phone"
+                            class="inline-flex items-center text-purple-600 dark:text-purple-400 hover:underline">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                            </svg>
+                            {{employee?.phone}}
+                        </a>
+                        <a [href]="getGoogleMapsUrl(employee?.address)" target="_blank"
+                            class="inline-flex items-center text-purple-600 dark:text-purple-400 hover:underline">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" />
+                            </svg>
+                            {{ employee?.address }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

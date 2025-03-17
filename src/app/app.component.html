@@ -30,17 +30,22 @@
                         </a>
                     </li>
                 </ng-container>
-                
             </ul>
         </div>
 
         <div class="flex md:order-2 space-x-5 md:space-x-3 rtl:space-x-reverse">
-            <button *ngIf="!isLogin" routerLink="/login"
+            <button routerLink="/login" *ngIf="!isLogin"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
                        font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 
                        dark:focus:ring-blue-800">
                 Login
             </button>
+            <div class="currentUser flex items-center" *ngIf="isLogin" (click)="toProfilePage()">
+                <img class="h-10 w-10 rounded-full" [src]="currentUser.avatar" alt="avatar" [ngClass]="!currentUser.avatar? 'hidden' : ''">
+                <span class="ml-2 text-sm font-medium dark:text-white hover:text-blue-500">
+                    {{ currentUser.username }}
+                </span>
+            </div>
             <button (click)="logout()" *ngIf="isLogin"
                 class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
                        font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 
@@ -51,7 +56,7 @@
     </div>
 </nav>
 
-<div class="content w-full px-4 py-20">
+<div class="content w-full pt-18">
     <app-toast></app-toast>
     <router-outlet></router-outlet>
 </div>

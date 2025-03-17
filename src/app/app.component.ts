@@ -17,6 +17,7 @@ import { ToastService } from './services/toast/toast.service';
 export class AppComponent {
   title: String = 'demo-client';
   token: string = "";
+  currentUser: any = null;
 
   isLogin = false;
 
@@ -44,9 +45,11 @@ export class AppComponent {
   ngOnInit(){
     this.authService.getIsLoggedIn().subscribe((res) => {
       this.isLogin = res;
+      this.currentUser = this.storageService.getUserInfo();
     });
 
     this.isAuthenticated();
+    
   }
 
   logout(){
@@ -55,6 +58,10 @@ export class AppComponent {
     this.authService.setIsLoggedIn(false);
     this.toastService.showToast("Logout successfully", "success");
     this.router.navigateByUrl("/");
+  }
+  
+  toProfilePage(){
+    this.router.navigateByUrl("/employees/profile");
   }
 
   isAuthenticated(){

@@ -29,4 +29,9 @@ export class StorageService {
   getToken(): string | null {
     return window.localStorage.getItem("token");
   }
+
+  getUserInfo(): any {
+    const userInfoString = window.localStorage.getItem("userInfo");
+    return userInfoString ? JSON.parse(userInfoString) : null;
+  }
 }

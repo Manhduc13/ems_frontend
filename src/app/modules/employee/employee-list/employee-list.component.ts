@@ -55,7 +55,7 @@ export class EmployeeListComponent {
         this.employees = res.data.map((employee: any) => {
           return {
             ...employee,
-            processedAvatar: employee.avatar ? employee.avatar : 'assets/default-avatar.png' // Gán URL trực tiếp
+            processedAvatar: employee.avatar ? employee.avatar : 'https://res.cloudinary.com/ddfqvag5q/image/upload/v1742184227/default_ncpebq.png' // Gán URL trực tiếp
           };
         });
       },
