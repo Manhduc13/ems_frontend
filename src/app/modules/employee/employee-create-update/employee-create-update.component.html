@@ -1,18 +1,27 @@
 <div class="w-full mx-auto px-8 py-10 flex flex-col items-center">
     <h1 class="text-xl font-bold text-center text-gray-700 mb-8">Employee Information</h1>
-    <div
-        class="actions w-full flex flex-row justify-end items-center pb-4 space-x-3 *:text-white *:font-medium *:py-2 *:px-4 *:rounded-md">
-        <button class="bg-gray-400 hover:bg-gray-500" (click)="close.emit()">
+
+    <div *ngIf="isLoading" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="actions w-full flex flex-row justify-end items-center pb-4 space-x-3 *:text-white *:font-medium *:py-2 *:px-4 *:rounded-md">
+        <button class="bg-gray-400 hover:bg-gray-500" (click)="close.emit()" [disabled]="isLoading">
             Cancel
         </button>
-        <button class="bg-blue-500 hover:bg-blue-600" (click)="submitForm()">
-            Save
+        <button class="bg-blue-500 hover:bg-blue-600 flex items-center space-x-2" (click)="submitForm()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">Save</span>
+            <span *ngIf="isLoading">
+                <i class="fa fa-spinner fa-spin"></i> Processing...
+            </span>
         </button>
     </div>
+
     <form class="w-full flex flex-col gap-4" [formGroup]="createUpdateForm">
         <div class="flex items-center space-x-6 ">
             <div class="shrink-0">
-                <img id='preview_img' class="h-16 w-16 object-cover rounded-full" [src]="imagePreview" alt="profile" [ngClass]="!imagePreview ? 'hidden' : ''" />
+                <img id='preview_img' class="h-16 w-16 object-cover rounded-full"
+                    [src]="imagePreview || employee?.avatar || 'assets/default.png'" alt="profile" />
             </div>
             <label class="block">
                 <span class="sr-only">Choose profile photo</span>
@@ -21,9 +30,9 @@
                 file:rounded-full file:border-0
                 file:text-sm file:font-semibold
                 file:bg-violet-50 file:text-violet-700
-                hover:file:bg-violet-100
-              " />
-            </label>
+                hover:file:bg-violet-100 
+              " [disabled]="isLoading"/>
+            </label>           
         </div>
 
         <div class="w-full flex flex-row justify-between items-center">

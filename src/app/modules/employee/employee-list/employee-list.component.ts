@@ -52,11 +52,11 @@ export class EmployeeListComponent {
 
     this.employeeService.searchWithFilter(filters).subscribe({
       next: (res: any) => {
-        //this.employees = res.data;
-        this.employees = [];
-        res.data.forEach((element: { processedAvatar: string; avatar: string; }) => {
-          element.processedAvatar = 'data:image/jpg;base64,' + element.avatar;
-          this.employees.push(element);
+        this.employees = res.data.map((employee: any) => {
+          return {
+            ...employee,
+            processedAvatar: employee.avatar ? employee.avatar : 'assets/default-avatar.png' // Gán URL trực tiếp
+          };
         });
       },
       error: (err) => {

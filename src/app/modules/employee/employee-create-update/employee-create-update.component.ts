@@ -25,6 +25,8 @@ export class EmployeeCreateUpdateComponent {
   imagePreview!: string | ArrayBuffer | null;
   imageBase64!: string | null;
 
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
@@ -98,41 +100,58 @@ export class EmployeeCreateUpdateComponent {
 
   submitForm() {
     if (this.createUpdateForm.valid) {
+      this.isLoading = true;
+      let formData = this.createUpdateForm.value;
 
-      const employeeData = {
-        firstName: this.createUpdateForm.get('firstName')?.value,
-        lastName: this.createUpdateForm.get('lastName')?.value,
-        phone: this.createUpdateForm.get('phone')?.value,
-        email: this.createUpdateForm.get('email')?.value,
-        gender: this.createUpdateForm.get('gender')?.value,
-        address: this.createUpdateForm.get('address')?.value || '',
-        dob: this.createUpdateForm.get('dob')?.value,
-        roleIds: this.createUpdateForm.get('roleIds')?.value,
-        avatar: this.imageBase64 || this.createUpdateForm.get('avatar')?.value, // base64 hoặc URL
-      };
-
-      if (this.employee) {
-        this.employeeService.update(this.employee.id, employeeData).subscribe(() => {
-          this.toastService.showToast('Employee updated successfully', 'success');
-          this.refresh.emit();
-          this.close.emit();
-        }, (error) => {
-          console.error('Lỗi khi cập nhật:', error);
-          this.toastService.showToast('Update failed!', 'error');
-        });
-      } else {
-        this.employeeService.create(employeeData).subscribe(() => {
-          this.toastService.showToast('Employee added successfully', 'success');
-          this.refresh.emit();
-          this.close.emit();
-        }, (error) => {
-          console.error('Lỗi khi tạo mới:', error);
-          this.toastService.showToast('Creation failed!', 'error');
-        });
-      }
-
+    if (this.selectedFile) {
+      // upload new image then update
+      this.employeeService.uploadImage(this.selectedFile).subscribe(
+        (response) => {
+          console.log("Uploaded image URL:", response.url);
+          // add avatar url to form
+          formData.avatar = response.url;
+          // call api update
+          this.saveEmployee(formData);
+        },
+        (error) => {
+          console.error('Lỗi khi upload ảnh:', error);
+          this.toastService.showToast('Upload image failed!', 'error');
+          this.isLoading = false;
+        }
+      );
+    } else {
+      // update with old avatar
+      formData.avatar = this.employee?.avatar || ''; 
+      this.saveEmployee(formData);
+    }
     } else {
       this.toastService.showToast('Form is invalid', 'error');
+    }
+  }
+
+  saveEmployee(employeeData: any) {
+    if (this.employee) {
+      this.employeeService.update(this.employee.id, employeeData).subscribe(() => {
+        this.toastService.showToast('Employee updated successfully', 'success');
+        this.refresh.emit();
+        this.close.emit();
+        this.isLoading = false;
+      }, (error) => {
+        console.error('Update errors:', error);
+        this.toastService.showToast('Update failed!', 'error');
+        this.isLoading = false;
+      });
+    } else {
+      this.employeeService.create(employeeData).subscribe(() => {
+        this.toastService.showToast('Employee added successfully', 'success');
+        this.refresh.emit();
+        this.close.emit();
+        this.isLoading = false;
+      }, (error) => {
+        console.error('Create errors:', error);
+        this.toastService.showToast('Creation failed!', 'error');
+        this.isLoading = false;
+      });
     }
   }
 
@@ -143,15 +162,12 @@ export class EmployeeCreateUpdateComponent {
       if (this.selectedFile.type.startsWith('image/')) {
         const reader = new FileReader();
         reader.onload = () => {
-          this.imagePreview = reader.result;
-          this.imageBase64 = (reader.result as string).split(',')[1]; // Chỉ lấy phần Base64
+          this.imagePreview = reader.result; // Hiển thị ảnh trước khi upload
         };
         reader.readAsDataURL(this.selectedFile);
       } else {
-        this.toastService.showToast("Selected file is not an image or no file selected", "error");
+        this.toastService.showToast("Selected file is not an image", "error");
       }
-    } else {
-      this.toastService.showToast("No file selected or event is not valid", "error");
     }
   }
 
@@ -159,7 +175,7 @@ export class EmployeeCreateUpdateComponent {
     if (this.selectedFile && this.selectedFile.type.startsWith('image/')) { // Check if the file is an image
       const reader = new FileReader();
       reader.onload = () => {
-        this.imagePreview = reader.result;
+        this.imagePreview = reader.result as string;
       };
       reader.readAsDataURL(this.selectedFile);
     } else {

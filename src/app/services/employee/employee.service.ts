@@ -4,6 +4,7 @@ import { StorageService } from '../storage/storage.service';
 import { Observable } from 'rxjs';
 
 const BASE_URL = "http://localhost:8080/api/employees";
+const cloudinaryUrl = 'http://localhost:8080/cloudinary/upload';
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,12 @@ export class EmployeeService {
     return this.http.delete(`${BASE_URL}/delete/${id}`, {
       headers: this.createAuthorizationHeader()
     });
+  }
+
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', file);
+    return this.http.post(cloudinaryUrl, formData);
   }
 
   createAuthorizationHeader(): HttpHeaders {
