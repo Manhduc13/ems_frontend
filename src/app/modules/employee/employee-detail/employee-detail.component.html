@@ -1,9 +1,9 @@
-<div class="w-full mx-auto px-8 py-10 flex flex-col bg-slate-200 relative">
+<div class="w-full mx-auto px-8 py-10 flex flex-col bg-gray-800 relative">
     <button type="button" (click)="close.emit()" class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white">
         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
         <span class="sr-only">Close modal</span>
     </button>
-    <h1 class="text-2xl font-bold text-gray-700 mb-8">Employee Information</h1>
+    <h1 class="text-2xl font-bold text-white mb-8">Employee Information</h1>
     <div class="w-full flex flex-row mt-6">
         <div class="avatar w-[40%] flex flex-col items-center space-y-8">
             <img class="h-100 w-100 rounded-full" [src]="employee.avatar" alt="avatar">
@@ -14,43 +14,43 @@
         </div>
 
         <div class="info flex flex-col w-[60%] px-40 justify-between *:flex *:flex-row *:space-x-4">
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Full name: </h2>
                 <span>{{ employee.firstName }} {{ employee.lastName }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Username: </h2>
                 <span>{{ employee.username }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Phone: </h2>
                 <span>{{ employee.phone }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Email: </h2>
                 <span>{{ employee.email }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Date of birth: </h2>
                 <span>{{ employee.dob | date: 'dd/MM/yyyy' }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Address: </h2>
                 <span>{{ employee.address }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Gender: </h2>
                 <span class="lowercase">{{ employee.gender }}</span>
             </div>
-            <div>
+            <div class="*:text-white">
                 <h2 class="font-bold">Roles: </h2>
                 <span *ngFor="let role of employee.roles; let last = last" class="lowercase">
                     {{ role.name }}{{ last ? '' : ', ' }}
                 </span>
             </div>
             <div>
-                <h2 class="font-bold">Status: </h2>
-                <span [ngClass]="currentStatus ? 'text-green-700' : 'text-red-700'">{{ currentStatus ? 'Active' : 'Deactive' }}</span>
+                <h2 class="font-bold text-white">Status: </h2>
+                <span [ngClass]="currentStatus ? 'text-green-500' : 'text-red-500'">{{ currentStatus ? 'Active' : 'Deactive' }}</span>
             </div>
         </div>
     </div>

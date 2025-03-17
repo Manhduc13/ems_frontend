@@ -1,46 +1,47 @@
 <div class="w-full mx-auto px-8 py-10 flex flex-col items-center">
-    <h1 class="text-xl font-bold text-center text-gray-700 mb-8">Employee Information</h1>
+    <h1 class="text-xl font-bold text-center text-white mb-8">Employee Information</h1>
 
     <div *ngIf="isLoading" class="loading-overlay">
         <div class="spinner"></div>
     </div>
 
-    <div class="actions w-full flex flex-row justify-end items-center pb-4 space-x-3 *:text-white *:font-medium *:py-2 *:px-4 *:rounded-md">
-        <button class="bg-gray-400 hover:bg-gray-500" (click)="close.emit()" [disabled]="isLoading">
-            Cancel
-        </button>
-        <button class="bg-blue-500 hover:bg-blue-600 flex items-center space-x-2" (click)="submitForm()" [disabled]="isLoading">
-            <span *ngIf="!isLoading">Save</span>
-            <span *ngIf="isLoading">
-                <i class="fa fa-spinner fa-spin"></i> Processing...
-            </span>
-        </button>
-    </div>
-
     <form class="w-full flex flex-col gap-4" [formGroup]="createUpdateForm">
-        <div class="flex items-center space-x-6 ">
-            <div class="shrink-0">
-                <img id='preview_img' class="h-16 w-16 object-cover rounded-full"
-                    [src]="imagePreview || employee?.avatar || 'assets/default.png'" alt="img" />
+        <div class="flex items-center flex-row w-full justify-between">
+            <div class="flex items-center space-x-6">
+                <div class="shrink-0">
+                    <img id='preview_img' class="h-25 w-25 object-cover rounded-full"
+                        [src]="imagePreview || employee?.avatar || 'https://res.cloudinary.com/ddfqvag5q/image/upload/v1742184227/default_ncpebq.png'" alt="img" />
+                </div>
+                <label class="block">
+                    <span class="sr-only">Choose profile photo</span>
+                    <input type="file" (change)="onFileSelected($event)" class="block w-full text-sm text-slate-500
+                file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700
+                hover:file:bg-violet-100" [disabled]="isLoading" />
+                </label>
             </div>
-            <label class="block">
-                <span class="sr-only">Choose profile photo</span>
-                <input type="file" (change)="onFileSelected($event)" class="block w-full text-sm text-slate-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-violet-50 file:text-violet-700
-                hover:file:bg-violet-100 
-              " [disabled]="isLoading"/>
-            </label>           
+            <div
+                class="actions flex flex-row justify-end items-center pb-4 space-x-3 *:text-white *:font-medium *:py-2 *:px-4 *:rounded-md">
+                <button class="bg-gray-400 hover:bg-gray-500" (click)="close.emit()" [disabled]="isLoading">
+                    Cancel
+                </button>
+                <button class="bg-blue-500 hover:bg-blue-600 flex items-center space-x-2" (click)="submitForm()"
+                    [disabled]="isLoading">
+                    <span *ngIf="!isLoading">Save</span>
+                    <span *ngIf="isLoading">
+                        <i class="fa fa-spinner fa-spin"></i> Processing...
+                    </span>
+                </button>
+            </div>
+
         </div>
 
         <div class="w-full flex flex-row justify-between items-center">
             <div class="w-[49%] flex items-start flex-col justify-start">
-                <label for="firstName" class="text-sm text-gray-700 mr-2">First Name: <span
+                <label for="firstName" class="text-md text-white mb-2">First Name: <span
                         class="text-red-500">*</span></label>
                 <input type="text" id="firstName" name="firstName" formControlName="firstName" placeholder="Nguyen Van"
-                    class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 <div class="error text-red-500"
                     *ngIf="createUpdateForm.controls['firstName'].invalid && createUpdateForm.controls['firstName'].touched">
                     First Name is required.
@@ -48,10 +49,10 @@
             </div>
 
             <div class="w-[49%] flex items-start flex-col justify-start">
-                <label for="lastName" class="text-sm text-gray-700 mr-2">Last Name: <span
+                <label for="lastName" class="text-md text-white mb-2">Last Name: <span
                         class="text-red-500">*</span></label>
                 <input type="text" id="lastName" name="lastName" formControlName="lastName" placeholder="An"
-                    class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 <div class="error text-red-500"
                     *ngIf="createUpdateForm.controls['lastName'].invalid && createUpdateForm.controls['lastName'].touched">
                     Last Name is required.
@@ -61,10 +62,10 @@
 
         <div class="w-full flex flex-row justify-between items-center">
             <div class="w-[49%] flex items-start flex-col justify-start">
-                <label for="phone" class="text-sm text-gray-700 mr-2">Phone: <span class="text-red-500">*</span></label>
+                <label for="phone" class="text-md text-white mb-2">Phone: <span class="text-red-500">*</span></label>
                 <input type="text" id="phone" name="phone" formControlName="phone"
                     placeholder="0123456789 / +84123456789"
-                    class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 <div class="error text-red-500"
                     *ngIf="createUpdateForm.controls['phone'].invalid && createUpdateForm.controls['phone'].touched">
                     <span *ngIf="createUpdateForm.controls['phone'].errors?.['required']">Phone is required.</span>
@@ -75,9 +76,9 @@
             </div>
 
             <div class="w-[49%] flex items-start flex-col justify-start">
-                <label for="email" class="text-sm text-gray-700 mr-2">Email: <span class="text-red-500">*</span></label>
-                <input type="email" id="email" name="email" formControlName="email" placeholder="manh@gmail.com"
-                    class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <label for="email" class="text-md text-white mb-2">Email: <span class="text-red-500">*</span></label>
+                <input type="email" id="email" name="email" formControlName="email" placeholder="test@gmail.com"
+                    class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 <div class="error text-red-500"
                     *ngIf="createUpdateForm.controls['email'].invalid && createUpdateForm.controls['email'].touched">
                     <span *ngIf="createUpdateForm.controls['email'].errors?.['required']">Email is required.</span>
@@ -88,21 +89,21 @@
 
         <div class="w-full flex flex-row justify-between items-center">
             <div class="w-[49%] flex items-start flex-col justify-start">
-                <label for="address" class="text-sm text-gray-700 mr-2">Address:</label>
+                <label for="address" class="text-md text-white mb-2">Address:</label>
                 <input type="text" id="address" name="address" formControlName="address" placeholder="Hanoi, Vietnam"
-                    class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
             </div>
 
             <div class="w-[49%] flex items-start flex-col justify-start">
-                <label for="dob" class="text-sm text-gray-700 mr-2">Dob: <span class="text-red-500">*</span></label>
+                <label for="dob" class="text-md text-white mb-2">Dob: <span class="text-red-500">*</span></label>
                 <input type="date" id="dob" name="dob" formControlName="dob"
-                    class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
             </div>
         </div>
         <div class="flex items-start flex-col justify-start">
-            <label for="gender" class="text-sm text-gray-700 mr-2">Gender: <span class="text-red-500">*</span></label>
+            <label for="gender" class="text-md text-white mb-2">Gender: <span class="text-red-500">*</span></label>
             <select name="gender" id="gender" formControlName="gender"
-                class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 <option [value]="null" disabled>Choose your gender</option>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
@@ -114,9 +115,9 @@
             </div>
         </div>
         <div class="flex items-start flex-col justify-start">
-            <label for="roleIds" class="text-sm text-gray-700 mr-2">Role: <span class="text-red-500">*</span></label>
+            <label for="roleIds" class="text-md text-white mb-2">Role: <span class="text-red-500">*</span></label>
             <select id="roleIds" formControlName="roleIds" multiple
-                class="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                class="w-full px-3 py-2 rounded-md bg-gray-500 text-white border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500">
                 <option *ngFor="let role of roles" [value]="role.id" class="lowercase">{{ role.name }}</option>
             </select>
             <div class="error text-red-500"
