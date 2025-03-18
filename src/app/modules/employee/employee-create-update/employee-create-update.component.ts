@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from '../../../services/role/role.service';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { ToastService } from '../../../services/toast/toast.service';
+import { CloudinaryService } from '../../../services/cloudinary/cloudinary.service';
 
 @Component({
   selector: 'app-employee-create-update',
@@ -29,6 +30,7 @@ export class EmployeeCreateUpdateComponent {
   constructor(
     private fb: FormBuilder,
     private employeeService: EmployeeService,
+    private cloudinaryService: CloudinaryService,
     private roleService: RoleService,
     private toastService: ToastService,
   ) { }
@@ -104,9 +106,8 @@ export class EmployeeCreateUpdateComponent {
 
       if (this.selectedFile) {
         // upload new image then update
-        this.employeeService.uploadImage(this.selectedFile).subscribe(
+        this.cloudinaryService.uploadImage(this.selectedFile).subscribe(
           (response) => {
-            console.log("Uploaded image URL:", response.url);
             // add avatar url to form
             formData.avatar = response.url;
             // call api update

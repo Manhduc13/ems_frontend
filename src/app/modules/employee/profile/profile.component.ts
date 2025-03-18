@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { StorageService } from '../../../services/storage/storage.service';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
@@ -14,14 +13,12 @@ import { Router } from '@angular/router';
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  userInfo: any = null;
   employee: any = null;
   changePassword: boolean = false;
 
   changePasswordForm!: FormGroup;
 
   constructor(
-    private storageService: StorageService,
     private employeeService: EmployeeService,
     private toastService: ToastService,
     private fb: FormBuilder,
@@ -59,8 +56,7 @@ export class ProfileComponent {
   }
 
   loadUserInfo() {
-    this.userInfo = this.storageService.getUserInfo();
-    this.employeeService.getById(this.userInfo.id).subscribe((res) => {
+    this.employeeService.getCurrentEmployee().subscribe((res) => {
       this.employee = res;
     });
   }
