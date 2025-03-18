@@ -77,7 +77,7 @@
                         Password</button>
                 </div>
 
-                <form [formGroup]="changePasswordForm" class="flex w-full flex-col" *ngIf="changePassword">
+                <form [formGroup]="changePasswordForm" class="flex w-full flex-col" *ngIf="changePassword" #changePasswordFormRef>
                     <div class="flex w-full flex-row justify-between my-6">
                         <div class="w-[32%]">
                             <label class="block text-md font-medium text-white mb-1">Old Password <span

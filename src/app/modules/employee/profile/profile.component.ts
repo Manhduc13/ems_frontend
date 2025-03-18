@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { SharedModule } from '../../shared/shared.module';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
@@ -17,6 +17,8 @@ export class ProfileComponent {
   changePassword: boolean = false;
 
   changePasswordForm!: FormGroup;
+
+  @ViewChild('changePasswordFormRef') changePasswordFormRef!: ElementRef;
 
   constructor(
     private employeeService: EmployeeService,
@@ -63,6 +65,16 @@ export class ProfileComponent {
 
   getChangePasswordForm() {
     this.changePassword = true;
+
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 100);
+  }
+
+  scrollToForm() {
+    if (this.changePasswordFormRef) {
+      this.changePasswordFormRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   submitForm() {

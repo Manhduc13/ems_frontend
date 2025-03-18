@@ -74,12 +74,12 @@
     <!-- Paginantion -->
 
     <!-- Create/Update -->
-    <div *ngIf="showCreateUpdateForm" class="mt-6">
+    <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>
         <app-employee-create-update [employee]="selectedEmployee" (close)="closeForm()" (refresh)="getAll()">
         </app-employee-create-update>
     </div>
     <!--View Employee Detail -->
-    <div *ngIf="showDetailPage" class="mt-6">
+    <div *ngIf="showDetailPage" class="mt-6" #detailForm>
         <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailPage()"
             (refresh)="getAll()"></app-employee-detail>
     </div>

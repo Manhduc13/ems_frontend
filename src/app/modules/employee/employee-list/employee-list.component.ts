@@ -1,10 +1,9 @@
-import { Component, signal, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, signal, SimpleChanges, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { SharedModule } from '../../shared/shared.module';
 import { EmployeeCreateUpdateComponent } from "../employee-create-update/employee-create-update.component";
 import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { filter } from 'rxjs';
 import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
 import { ReportService } from '../../../services/report/report.service';
 
@@ -26,6 +25,9 @@ export class EmployeeListComponent {
   searchForm!: FormGroup;
 
   columns: String[] = ['Name', 'Phone', 'Email', 'Role', 'Status', 'Actions'];
+
+  @ViewChild('createUpdateForm') createUpdateForm!: ElementRef;
+  @ViewChild('detailForm') detailForm!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -72,14 +74,18 @@ export class EmployeeListComponent {
   }
 
   reset() {
-    this.searchForm.reset(); 
-    this.getAll();         
+    this.searchForm.reset();
+    this.getAll();
   }
 
   viewDetail(employee: any) {
     this.selectedEmployee = employee;
     this.showCreateUpdateForm = false;
     this.showDetailPage = true;
+
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 100);
   }
 
   closeDetailPage() {
@@ -90,12 +96,29 @@ export class EmployeeListComponent {
     this.selectedEmployee = null;
     this.showDetailPage = false;
     this.showCreateUpdateForm = true;
+
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 100);
   }
 
   toEditForm(employee: any) {
     this.selectedEmployee = employee;
     this.showDetailPage = false;
     this.showCreateUpdateForm = true;
+
+    setTimeout(() => {
+      this.scrollToForm();
+    }, 100);
+  }
+
+  scrollToForm() {
+    if (this.createUpdateForm) {
+      this.createUpdateForm.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    if (this.detailForm) {
+      this.detailForm.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   closeForm() {
@@ -104,7 +127,7 @@ export class EmployeeListComponent {
 
   delete(id: number) {
     this.employeeService.delete(id).subscribe((res) => {
-      if(res.delete) {
+      if (res.delete) {
         this.toastService.showToast("Delete employee successfully", "success");
         this.getAll();
       } else {
