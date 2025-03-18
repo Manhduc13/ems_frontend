@@ -6,6 +6,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { filter } from 'rxjs';
 import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
+import { ReportService } from '../../../services/report/report.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -30,6 +31,7 @@ export class EmployeeListComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private toastService: ToastService,
+    private reportService: ReportService
   ) { }
 
   ngOnInit() {
@@ -107,6 +109,20 @@ export class EmployeeListComponent {
         this.getAll();
       } else {
         this.toastService.showToast("Delete employee failed", "error");
+      }
+    });
+  }
+
+  generateReport() {
+    this.reportService.generateEmployeeReport().subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank'); // Open PDF in new tab
+      },
+      error: (err) => {
+        console.error('Error generating report:', err);
+        this.toastService.showToast("Failed to generate report", "error");
       }
     });
   }
