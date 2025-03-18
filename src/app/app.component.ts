@@ -1,5 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { SharedModule } from './modules/shared/shared.module';
 import { StorageService } from './services/storage/storage.service';

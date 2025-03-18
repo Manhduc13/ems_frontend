@@ -1,4 +1,4 @@
-import { Component, ElementRef, signal, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { SharedModule } from '../../shared/shared.module';
 import { EmployeeCreateUpdateComponent } from "../employee-create-update/employee-create-update.component";

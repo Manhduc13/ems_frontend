@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../../services/auth/auth.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { SharedModule } from '../../shared/shared.module';
 import { ForgotPasswordService } from '../../../services/forgotPassword/forgot-password.service';
@@ -121,7 +120,7 @@ export class ForgotPasswordComponent {
       });
     }
   }
-  
+
   sendEmail() {
     if (this.emailVerificationForm.valid) {
       this.forgotPasswordService.verifyEmail(this.emailVerificationForm.value).subscribe({
