@@ -16,6 +16,7 @@ import { ReportService } from '../../../services/report/report.service';
 })
 export class EmployeeListComponent {
   employees: any;
+
   showCreateUpdateForm: boolean = false;
   showDetailPage: boolean = false;
   selectedEmployee: any = null;
@@ -27,7 +28,7 @@ export class EmployeeListComponent {
 
   searchForm!: FormGroup;
 
-  columns: String[] = ['Name', 'Phone', 'Email', 'Role', 'Status', 'Actions'];
+  columns: String[] = ['No', 'Name', 'Phone', 'Email', 'Role', 'Status', 'Actions'];
 
   @ViewChild('createUpdateForm') createUpdateForm!: ElementRef;
   @ViewChild('detailForm') detailForm!: ElementRef;
@@ -73,6 +74,7 @@ export class EmployeeListComponent {
         this.pageInfo = res.page;
       },
       error: (err) => {
+        this.toastService.showToast("Failed to load employees", "error");
         console.error("Error fetching employees:", err);
       }
     });
