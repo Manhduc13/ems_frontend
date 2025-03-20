@@ -5,11 +5,12 @@ import { RoleService } from '../../../services/role/role.service';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { CloudinaryService } from '../../../services/cloudinary/cloudinary.service';
+import { LoadingComponent } from '../../common/loading/loading.component';
 
 @Component({
   selector: 'app-employee-create-update',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, LoadingComponent],
   templateUrl: './employee-create-update.component.html',
   styleUrl: './employee-create-update.component.css'
 })

@@ -11,7 +11,7 @@
     <h1 class="text-2xl font-bold text-white mb-8">Employee Information</h1>
     <div class="w-full flex flex-row mt-6">
         <div class="avatar w-[40%] flex flex-col items-center space-y-8">
-            <img class="h-105 w-100 rounded-full" [src]="employee.avatar" alt="avatar">
+            <img class="h-100 w-100 rounded-full" [src]="employee.avatar" alt="avatar">
             <button (click)="changeStatus()" class="px-7 py-1.5 rounded-full text-white"
                 [ngClass]="!currentStatus ? 'bg-green-500 hover:bg-green-700' : 'bg-red-500 hover:bg-red-700'">
                 <span class="text-xl">{{ !currentStatus ? 'Active' : 'Deactive' }}</span>

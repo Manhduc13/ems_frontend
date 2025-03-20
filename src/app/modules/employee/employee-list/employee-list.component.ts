@@ -88,7 +88,7 @@ export class EmployeeListComponent {
   changePageSize(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
     this.size = Number(selectElement.value);
-    this.page = 0; // Reset về trang đầu tiên khi thay đổi số lượng bản ghi
+    this.page = 0; 
     this.getAll();
   }
 
