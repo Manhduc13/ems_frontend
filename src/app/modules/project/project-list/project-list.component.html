@@ -87,13 +87,13 @@
     </div>
 
     <!-- Create/Update -->
-    <!-- <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>
-        <app-employee-create-update [employee]="selectedEmployee" (close)="closeForm()" (refresh)="getAll()">
-        </app-employee-create-update>
-    </div> -->
+    <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>
+        <app-project-create-update [project]="selectedProject" (close)="closeForm()" (refresh)="getAll()">
+        </app-project-create-update>
+    </div>
     <!--View Employee Detail -->
-    <!-- <div *ngIf="showDetailPage" class="mt-6" #detailForm>
-        <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailPage()"
-            (refresh)="getAll()"></app-employee-detail>
-    </div> -->
+    <div *ngIf="showDetailPage" class="mt-6" #detailForm>
+        <app-project-detail [project]="selectedProject" (close)="closeDetailPage()" (refresh)="getAll()">
+        </app-project-detail>
+    </div>
 </div>

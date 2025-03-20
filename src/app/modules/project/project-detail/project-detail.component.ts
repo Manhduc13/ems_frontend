@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-project-detail',
@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './project-detail.component.css'
 })
 export class ProjectDetailComponent {
-
+  @Input() project: any = null;
+  @Output() close = new EventEmitter<void>();
+  @Output() refresh = new EventEmitter<void>();
 }
