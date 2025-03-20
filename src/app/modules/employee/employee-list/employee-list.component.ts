@@ -21,6 +21,9 @@ export class EmployeeListComponent {
   selectedEmployee: any = null;
 
   keyword: any;
+  page: number = 0;
+  size: number = 5;
+  pageInfo: any;
 
   searchForm!: FormGroup;
 
@@ -43,18 +46,22 @@ export class EmployeeListComponent {
 
   initializeSearchForm() {
     this.searchForm = this.fb.group({
-      keyword: [null]
+      keyword: ['']
     });
   }
 
   getAll() {
-    let filters = this.searchForm.value;
+    const keywordValue = this.searchForm.value.keyword?.trim();
 
-    if (!filters.keyword) {
-      filters = {};
+    const filter = {
+      keyword: keywordValue,
+      page: this.page,
+      size: this.size,
+      sortBy: "username",
+      order: "asc"
     }
 
-    this.employeeService.searchWithFilter(filters).subscribe({
+    this.employeeService.searchWithFilter(filter).subscribe({
       next: (res: any) => {
         this.employees = res.data.map((employee: any) => {
           return {
@@ -62,12 +69,29 @@ export class EmployeeListComponent {
             processedAvatar: employee.avatar ? employee.avatar : 'https://res.cloudinary.com/ddfqvag5q/image/upload/v1742184227/default_ncpebq.png' // Gán URL trực tiếp
           };
         });
+
+        this.pageInfo = res.page;
       },
       error: (err) => {
         console.error("Error fetching employees:", err);
       }
     });
   }
+
+  changePage(newPage: number) {
+    if (newPage >= 0 && newPage < this.pageInfo.totalPages) {
+      this.page = newPage;
+      this.getAll();
+    }
+  }
+
+  changePageSize(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.size = Number(selectElement.value);
+    this.page = 0; // Reset về trang đầu tiên khi thay đổi số lượng bản ghi
+    this.getAll();
+  }
+
 
   search() {
     this.getAll();
@@ -127,7 +151,8 @@ export class EmployeeListComponent {
 
   delete(id: number) {
     this.employeeService.delete(id).subscribe((res) => {
-      if (res.delete) {
+      console.log(res);
+      if (res.deleted) {
         this.toastService.showToast("Delete employee successfully", "success");
         this.getAll();
       } else {

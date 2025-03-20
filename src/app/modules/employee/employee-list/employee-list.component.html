@@ -30,11 +30,14 @@
     <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
         <thead class="bg-gray-700">
             <tr class="*:px-6 *:py-3 *:text-left *:text-xs *:font-medium *:text-white *:uppercase *:tracking-wider">
+                <th>No</th>
                 <th *ngFor="let column of columns">{{column}}</th>
             </tr>
         </thead>
         <tbody class=" divide-y divide-gray-200 bg-gray-600">
-            <tr *ngFor="let employee of employees" class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
+            <tr *ngFor="let employee of employees; let i = index"
+                class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
+                <td>{{ page * size + i + 1 }}</td>
                 <td>
                     <div class="flex items-center">
                         <div class="flex-shrink-0 h-10 w-10">
@@ -72,6 +75,32 @@
         </tbody>
     </table>
     <!-- Paginantion -->
+    <div class="pagination-controls">
+        <button (click)="changePage(0)" [disabled]="page === 0">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+        <button (click)="changePage(page - 1)" [disabled]="page === 0">
+            <i class="fa-solid fa-angle-left"></i>
+        </button>
+
+        <ng-container *ngFor="let p of [].constructor(pageInfo?.totalPages); let i = index">
+            <button (click)="changePage(i)" [class.active]="page === i">{{ i + 1 }}</button>
+        </ng-container>
+
+        <button (click)="changePage(page + 1)" [disabled]="page === pageInfo?.totalPages - 1">
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+        <button (click)="changePage(pageInfo?.totalPages - 1)" [disabled]="page === pageInfo?.totalPages - 1">
+            <i class="fa-solid fa-angles-right"></i>
+        </button>
+
+        <label class="text-white ml-10">Page size: </label>
+        <select (change)="changePageSize($event)" class="bg-gray-800 text-white border border-gray-300 rounded-md">
+            <option [value]="5" selected>5</option>
+            <option [value]="10">10</option>
+            <option [value]="20">20</option>
+        </select>
+    </div>
 
     <!-- Create/Update -->
     <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>

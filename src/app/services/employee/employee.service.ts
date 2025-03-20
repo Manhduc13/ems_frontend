@@ -15,9 +15,9 @@ export class EmployeeService {
     private storageService: StorageService
   ) { }
 
-  searchWithFilter(keyword: any): Observable<any> {
+  searchWithFilter(filter: any): Observable<any> {
     return this.http.get(BASE_URL + "/search", {
-      params: keyword,
+      params: filter,
       headers: this.createAuthorizationHeader()
     });
   }

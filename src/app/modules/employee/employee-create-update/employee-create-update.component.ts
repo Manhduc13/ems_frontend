@@ -55,7 +55,7 @@ export class EmployeeCreateUpdateComponent {
       address: [this.employee?.address || null],
       gender: [this.employee?.gender ?? null, Validators.required],
       roleIds: [this.employee?.roles.map((role: any) => role.id) || [], Validators.required],
-      avatar: [this.employee?.avatar || '']
+      avatar: [this.employee?.avatar || null]
     });
 
     if (this.employee?.avatar) {
@@ -121,7 +121,7 @@ export class EmployeeCreateUpdateComponent {
         );
       } else {
         // update with old avatar
-        formData.avatar = this.employee?.avatar || '';
+        formData.avatar = this.employee?.avatar || null;
         this.saveEmployee(formData);
       }
     } else {
