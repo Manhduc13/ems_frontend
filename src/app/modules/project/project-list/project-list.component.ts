@@ -19,7 +19,7 @@ export class ProjectListComponent {
 
   searchForm!: FormGroup;
 
-  showCreateUpdateForm: boolean = true;
+  showCreateUpdateForm: boolean = false;
   showDetailPage: boolean = false;
   selectedProject: any;
 
