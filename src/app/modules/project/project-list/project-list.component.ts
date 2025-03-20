@@ -23,7 +23,12 @@ export class ProjectListComponent {
   showDetailPage: boolean = false;
   selectedProject: any;
 
-  columns: String[] = ['Name', 'Start Date', 'Budget', 'Status', 'Actions'];
+  keyword: any;
+  page: number = 0;
+  size: number = 5;
+  pageInfo: any;
+
+  columns: String[] = ['No', 'Name', 'Start Date', 'Budget', 'Status', 'Actions'];
 
   @ViewChild('createUpdateForm') createUpdateForm!: ElementRef;
   @ViewChild('detailForm') detailForm!: ElementRef;
@@ -36,13 +41,31 @@ export class ProjectListComponent {
   ) { }
 
   ngOnInit() {
+    this.initializeForm();
     this.getAll();
   }
 
+  initializeForm() {
+    this.searchForm = this.fb.group({
+      keyword: ['']
+    });
+  }
+
   getAll() {
-    this.projectService.getAll().subscribe({
+    const keywordValue = this.searchForm.value.keyword?.trim();
+
+    const filter = {
+      keyword: keywordValue,
+      page: this.page,
+      size: this.size,
+      sortBy: "name",
+      order: "asc"
+    }
+
+    this.projectService.searchWithFilter(filter).subscribe({
       next: (res: any) => {
-        this.projects = res;
+        this.projects = res.data;
+        this.pageInfo = res.page;
       },
       error: (err) => {
         this.toastService.showToast("Failed to load projects", "error");
@@ -51,8 +74,18 @@ export class ProjectListComponent {
     });
   }
 
-  reset(){
+  changePage(newPage: number) {
+    if (newPage >= 0 && newPage < this.pageInfo.totalPages) {
+      this.page = newPage;
+      this.getAll();
+    }
+  }
 
+  changePageSize(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    this.size = Number(selectElement.value);
+    this.page = 0;
+    this.getAll();
   }
 
   generateReport() {
@@ -60,7 +93,13 @@ export class ProjectListComponent {
   }
 
   search() {
+    this.getAll();
+  }
 
+  reset() {
+    this.searchForm.reset({ keyword: '' }); 
+    this.page = 0;
+    this.getAll();
   }
 
   toCreateForm() {
@@ -103,6 +142,10 @@ export class ProjectListComponent {
 
   closeForm() {
     this.showCreateUpdateForm = false;
+  }
+
+  closeDetailPage() {
+    this.showDetailPage = false;
   }
 
   delete(id: number) {

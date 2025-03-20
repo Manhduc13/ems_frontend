@@ -1,6 +1,6 @@
 <div class="w-full px-4 bg-gray-800 min-h-screen">
     <!-- Search form -->
-    <!-- <div class="action py-4 flex flex-row justify-between items-center">
+    <div class="action py-4 flex flex-row justify-between items-center">
         <form [formGroup]="searchForm" class="flex relative rounded-md w-full max-w-xl" (ngSubmit)="search()">
             <input type="text" formControlName="keyword" placeholder="Enter keyword"
                 class="w-full p-2 rounded-md border border-gray-300 placeholder-gray-500 text-white" />
@@ -22,10 +22,10 @@
 
             <button class="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors p-2"
                 (click)="toCreateForm()">
-                New Employee
+                New Project
             </button>
         </div>
-    </div> -->
+    </div>
     <!-- Table -->
     <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
         <thead class="bg-gray-700">
@@ -34,19 +34,22 @@
             </tr>
         </thead>
         <tbody class=" divide-y divide-gray-200 bg-gray-600">
-            <tr *ngFor="let project of projects; let i = index"
-                class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
-                <!-- <td>{{ page * size + i + 1 }}</td> -->
+            <tr *ngFor="let project of projects; let i = index" class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
+                <td>{{ page * size + i + 1 }}</td>
                 <td>{{ project.name }}</td>
                 <td>{{ project.startDate }}</td>
                 <td>{{ project.budget }}</td>
-                <td>{{ project.status }}</td>
-                <!-- <td>
-                    <span class="px-2.5 py-2 inline-flex rounded-full text-white"
-                        [ngClass]="project.status ? 'bg-green-500 text-green-800' : 'bg-red-100 text-red-800'">
-                        {{ project.status ? 'Active' : 'Inactive' }}
+                <td>
+                    <span class="px-2.5 py-2 inline-flex rounded-full text-white lowercase" [ngClass]="{
+                            'bg-gray-500': project.status === 'PLANNED',
+                            'bg-yellow-500': project.status === 'IN_PROGRESS',
+                            'bg-green-500': project.status === 'COMPLETED',
+                            'bg-blue-500': project.status === 'ON_HOLD',
+                            'bg-red-500': project.status === 'CANCELLED'
+                        }">
+                        {{ project.status.replace('_', ' ') }}
                     </span>
-                </td> -->
+                </td>
                 <td class="space-x-3">
                     <i class="fas fa-eye text-green-500 hover:text-green-700" (click)="viewDetail(project)"></i>
                     <i class="fas fa-edit text-blue-600 hover:text-blue-900" (click)="toEditForm(project)"></i>
@@ -56,7 +59,7 @@
         </tbody>
     </table>
     <!-- Paginantion -->
-    <!-- <div class="pagination-controls">
+    <div class="pagination-controls">
         <button (click)="changePage(0)" [disabled]="page === 0">
             <i class="fa-solid fa-angles-left"></i>
         </button>
@@ -81,7 +84,7 @@
             <option [value]="10">10</option>
             <option [value]="20">20</option>
         </select>
-    </div> -->
+    </div>
 
     <!-- Create/Update -->
     <!-- <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>

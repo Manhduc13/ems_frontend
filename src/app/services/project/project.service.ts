@@ -27,6 +27,13 @@ export class ProjectService {
     });
   }
 
+  searchWithFilter(filter: any): Observable<any> {
+    return this.http.get(BASE_URL + "/search", {
+      params: filter,
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
   create(request: any): Observable<any> {
     return this.http.post(BASE_URL + "/create", request, {
       headers: this.createAuthorizationHeader()
@@ -76,10 +83,10 @@ export class ProjectService {
   }
 
   createAuthorizationHeader(): HttpHeaders {
-      let authHeaders: HttpHeaders = new HttpHeaders();
-      return authHeaders.set(
-        'Authorization',
-        'Bearer ' + this.storageService.getToken()
-      );
-    }
+    let authHeaders: HttpHeaders = new HttpHeaders();
+    return authHeaders.set(
+      'Authorization',
+      'Bearer ' + this.storageService.getToken()
+    );
+  }
 }

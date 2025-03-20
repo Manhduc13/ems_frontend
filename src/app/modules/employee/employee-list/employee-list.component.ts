@@ -100,7 +100,8 @@ export class EmployeeListComponent {
   }
 
   reset() {
-    this.searchForm.reset();
+    this.searchForm.reset({ keyword: '' }); 
+    this.page = 0;
     this.getAll();
   }
 
