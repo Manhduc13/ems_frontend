@@ -20,8 +20,16 @@ export class ProjectDetailComponent {
   employees: any[] = [];
 
   columns: String[] = ['Id', 'Name', 'Phone', 'Email', 'Role', 'Actions'];
+  statuses: any[] = [
+    {value: 'PLANNED', label: 'Planned'},
+    {value: 'IN_PROGRESS', label: 'In Progress'},
+    {value: 'COMPLETED', label: 'Completed'},
+    {value: 'OM_HOLD', label: 'On Hold'},
+    {value: 'CANCELLED', label: 'Cancelled'},
+  ];
 
   selectedEmployeeId: number | null = null;
+  selectedStatus: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -29,8 +37,23 @@ export class ProjectDetailComponent {
   ) { }
 
   ngOnInit() {
+    this.selectedStatus = this.project.status;
     this.loadMemberTable();
     this.loadOtherEmployees();
+  }
+
+  changeStatus(){
+    this.projectService.updateStatus(this.project.id, this.selectedStatus).subscribe({
+      next: () => {
+        this.toastService.showToast("Project status updated successfully", "success");
+        this.project.status = this.selectedStatus;
+        this.refresh.emit();
+      },
+      error: (err) => {
+        this.toastService.showToast("Failed to update project status", "error");
+        console.log(err);
+      }
+    });
   }
 
   loadMemberTable() {

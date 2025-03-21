@@ -20,10 +20,18 @@
                 <h2 class="font-bold">Start Date: </h2>
                 <span>{{ project?.startDate }}</span>
             </div>
-            <div class="*:text-white">
-                <h2 class="font-bold">Status: </h2>
-                <span>{{ project?.status }}</span>
-            </div>
+            <div class="*:text-white flex flex-row items-center space-x-4">
+                <label for="status" class="font-bold">Project Status:</label>
+                <select id="status" [(ngModel)]="selectedStatus">
+                  <option *ngFor="let status of statuses" [value]="status.value" class="bg-gray-500">
+                    <span>{{ status.label }}</span>
+                  </option>
+                </select>
+              
+                <button *ngIf="selectedStatus !== project.status" (click)="changeStatus()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors px-2">
+                  Change Status
+                </button>
+              </div>
             <div class="*:text-white">
                 <h2 class="font-bold">Budget: </h2>
                 <span>{{ project?.budget }}</span>
