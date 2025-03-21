@@ -89,7 +89,17 @@ export class ProjectListComponent {
   }
 
   generateReport() {
-
+    this.reportService.generateProjectReport().subscribe({
+      next: (response: Blob) => {
+        const blob = new Blob([response], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      },
+      error: (err) => {
+        console.error('Error generating report:', err);
+        this.toastService.showToast("Failed to generate report", "error");
+      }
+    });
   }
 
   search() {
@@ -97,7 +107,7 @@ export class ProjectListComponent {
   }
 
   reset() {
-    this.searchForm.reset({ keyword: '' }); 
+    this.searchForm.reset({ keyword: '' });
     this.page = 0;
     this.getAll();
   }

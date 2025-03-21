@@ -10,7 +10,7 @@ import { ProfileComponent } from './modules/employee/profile/profile.component';
 import { ProjectListComponent } from './modules/project/project-list/project-list.component';
 
 export const routes: Routes = [
-    {path: '', component: HomeComponent},
+    {path: '', component: AboutComponent},
     {path: 'about', component: AboutComponent},
     {path: 'services', component: ServiceComponent},
     {path: 'contact', component: ContactComponent},

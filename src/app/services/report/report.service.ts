@@ -23,7 +23,8 @@ export class ReportService {
   }
 
   generateProjectReport(): Observable<any> {
-    return this.http.get(`${BASE_URL}/projects`, {
+    return this.http.get(`${BASE_URL}/project`, {
+      responseType: 'blob',
       headers: this.createAuthorizationHeader()
     })
   }
