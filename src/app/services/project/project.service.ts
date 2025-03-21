@@ -82,6 +82,12 @@ export class ProjectService {
     });
   }
 
+  getNotMembers(id: number): Observable<any> {
+    return this.http.get(`${BASE_URL}/getNotMembers/${id}`, {
+      headers: this.createAuthorizationHeader()
+    });
+  }
+
   createAuthorizationHeader(): HttpHeaders {
     let authHeaders: HttpHeaders = new HttpHeaders();
     return authHeaders.set(

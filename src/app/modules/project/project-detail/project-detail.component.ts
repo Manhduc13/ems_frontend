@@ -21,15 +21,16 @@ export class ProjectDetailComponent {
 
   columns: String[] = ['Id', 'Name', 'Phone', 'Email', 'Role', 'Actions'];
 
+  selectedEmployeeId: number | null = null;
+
   constructor(
     private projectService: ProjectService,
-    private employeeService: EmployeeService,
     private toastService: ToastService
   ) { }
 
   ngOnInit() {
     this.loadMemberTable();
-    this.loadAllEmployees();
+    this.loadOtherEmployees();
   }
 
   loadMemberTable() {
@@ -49,8 +50,8 @@ export class ProjectDetailComponent {
     });
   }
 
-  loadAllEmployees() {
-    this.employeeService.getAll().subscribe({
+  loadOtherEmployees() {
+    this.projectService.getNotMembers(this.project.id).subscribe({
       next: (res) => {
         this.employees = res.map((employee: any) => {
           return {
@@ -67,7 +68,27 @@ export class ProjectDetailComponent {
   }
 
   addMember() {
-
+    if (!this.selectedEmployeeId) {
+      this.toastService.showToast("Please select an employee to add", "warning");
+    } else {
+      this.projectService.addMember(this.project.id, this.selectedEmployeeId).subscribe({
+        next: (res) => {
+          if (res) {
+            this.toastService.showToast("Add member successfully", "success");
+            this.loadMemberTable();
+            this.selectedEmployeeId = null;
+            this.loadOtherEmployees();
+            this.refresh.emit();
+          } else {
+            this.toastService.showToast("Add member failed", "error");
+          }
+        },
+        error: (err) => {
+          this.toastService.showToast("Failed to add member", "error");
+          console.log(err);
+        }
+      })
+    }
   }
 
   removeMember(employeeId: number) {
@@ -76,6 +97,9 @@ export class ProjectDetailComponent {
         if (res) {
           this.toastService.showToast("Remove member successfully", "success");
           this.loadMemberTable();
+          this.selectedEmployeeId = null;
+          this.loadOtherEmployees();
+          this.refresh.emit();
         } else {
           this.toastService.showToast("Remove member failed", "error");
         }
@@ -90,7 +114,7 @@ export class ProjectDetailComponent {
   setAsLeader(employeeId: number) {
     this.projectService.setAsLeader(this.project.id, employeeId).subscribe({
       next: (res) => {
-        if(res) {
+        if (res) {
           this.toastService.showToast("Set this member as leader successfully", "success");
           this.project.leader_id = employeeId;
           this.loadMemberTable();
