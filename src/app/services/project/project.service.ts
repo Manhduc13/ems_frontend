@@ -70,7 +70,7 @@ export class ProjectService {
     });
   }
 
-  chooseLeader(projectId: number, employeeId: number): Observable<any> {
+  setAsLeader(projectId: number, employeeId: number): Observable<any> {
     return this.http.put(`${BASE_URL}/chooseLeader/${projectId}/${employeeId}`, null, {
       headers: this.createAuthorizationHeader()
     });
