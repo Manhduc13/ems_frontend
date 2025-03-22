@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { RoleService } from '../../../services/role/role.service';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { ToastService } from '../../../services/toast/toast.service';
@@ -52,7 +52,7 @@ export class EmployeeCreateUpdateComponent {
         Validators.required,
         Validators.pattern('^[\\w\\-.]+@[\\w\\-]+\\.[a-zA-Z]{2,4}$')
       ]],
-      dob: [this.employee?.dob ? this.formatDate(this.employee.dob) : '', Validators.required],
+      dob: [this.employee?.dob ? this.formatDate(this.employee.dob) : '', [Validators.required, this.pastDateValidator()]],
       address: [this.employee?.address || null],
       gender: [this.employee?.gender ?? null, Validators.required],
       roleIds: [this.employee?.roles.map((role: any) => role.id) || [], Validators.required],
@@ -60,11 +60,11 @@ export class EmployeeCreateUpdateComponent {
     });
 
     if (this.employee?.avatar) {
-      // Kiểm tra xem avatar có phải Base64 hay là URL
-      if (this.employee.avatar.startsWith('/9j/') || this.employee.avatar.startsWith('iVBOR')) {
+      // Check avatar whether it is base64 or URL
+      if (this.employee.avatar.startsWith('/9j/') || this.employee.avatar.startsWith('iVBOR')) { // base64
         this.imagePreview = `data:image/png;base64,${this.employee.avatar}`;
       } else {
-        this.imagePreview = this.employee.avatar; // Nếu là URL, dùng luôn
+        this.imagePreview = this.employee.avatar; // URL
       }
     } else {
       this.imagePreview = null;
@@ -77,6 +77,18 @@ export class EmployeeCreateUpdateComponent {
     if (!date) return '';
     const d = new Date(date);
     return d.toISOString().split('T')[0];
+  }
+
+  pastDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      if (!control.value) return null;
+  
+      const selectedDate = new Date(control.value);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+  
+      return selectedDate >= today ? { futureDate: true } : null;
+    };
   }
 
   ngOnChanges(changes: SimpleChanges) {

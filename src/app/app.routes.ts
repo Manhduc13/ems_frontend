@@ -12,7 +12,7 @@ import { ProjectListComponent } from './modules/project/project-list/project-lis
 export const routes: Routes = [
     {path: '', component: AboutComponent},
     {path: 'about', component: AboutComponent},
-    {path: 'services', component: ServiceComponent},
+    // {path: 'services', component: ServiceComponent},
     {path: 'contact', component: ContactComponent},
     {path: 'login', component: LoginComponent},
     {path: 'employees', component: EmployeeListComponent},
