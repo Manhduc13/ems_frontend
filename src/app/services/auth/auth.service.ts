@@ -8,10 +8,10 @@ const BASE_URL = "http://localhost:8080/api/auth";
   providedIn: 'root'
 })
 export class AuthService {
-  
+
   private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasToken());
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   login(loginRequest: any): Observable<any> {
     return this.http.post(BASE_URL + "/login", loginRequest);
@@ -30,6 +30,17 @@ export class AuthService {
   }
 
   private hasToken(): boolean {
-    return localStorage.getItem("token") !== null; // ✅ Kiểm tra token có tồn tại hay không
+    let isValid = false;
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      let isValid = false;
+      this.validateToken(token).subscribe((res) => {
+        if (res.verify) {
+          isValid = true;
+        }
+      });
+      return isValid;
+    }
+    return isValid;
   }
 }

@@ -20,7 +20,6 @@ export class AppComponent {
 
   isLogin = false;
 
-  // Danh sách menu khi chưa đăng nhập
   mainMenu = [
     // { label: 'Home', link: '/' },
     { label: 'About', link: '/' },
@@ -28,7 +27,6 @@ export class AppComponent {
     { label: 'Contact', link: '/contact' }
   ];
 
-  // Danh sách menu khi đã đăng nhập
   loggedInMenu = [
     { label: 'Employees', link: '/employees' },
     { label: 'Projects', link: '/projects' }
