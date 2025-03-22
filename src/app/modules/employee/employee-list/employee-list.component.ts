@@ -6,11 +6,12 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
 import { ReportService } from '../../../services/report/report.service';
+import { PaginationComponent } from '../../common/pagination/pagination.component';
 
 @Component({
   selector: 'app-employee-list',
   standalone: true,
-  imports: [SharedModule, EmployeeCreateUpdateComponent, EmployeeDetailComponent],
+  imports: [SharedModule, EmployeeCreateUpdateComponent, EmployeeDetailComponent, PaginationComponent],
   templateUrl: './employee-list.component.html',
   styleUrl: './employee-list.component.css'
 })
@@ -81,19 +82,15 @@ export class EmployeeListComponent {
   }
 
   changePage(newPage: number) {
-    if (newPage >= 0 && newPage < this.pageInfo.totalPages) {
-      this.page = newPage;
-      this.getAll();
-    }
+    this.page = newPage;
+    this.getAll();
   }
-
-  changePageSize(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    this.size = Number(selectElement.value);
+  
+  changePageSize(newSize: number) {
+    this.size = newSize;
     this.page = 0; 
     this.getAll();
   }
-
 
   search() {
     this.getAll();

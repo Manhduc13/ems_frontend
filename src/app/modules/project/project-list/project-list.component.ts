@@ -6,11 +6,12 @@ import { ProjectService } from '../../../services/project/project.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReportService } from '../../../services/report/report.service';
+import { PaginationComponent } from '../../common/pagination/pagination.component';
 
 @Component({
   selector: 'app-project-list',
   standalone: true,
-  imports: [SharedModule, ProjectCreateUpdateComponent, ProjectDetailComponent],
+  imports: [SharedModule, ProjectCreateUpdateComponent, ProjectDetailComponent, PaginationComponent],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.css'
 })
@@ -75,16 +76,13 @@ export class ProjectListComponent {
   }
 
   changePage(newPage: number) {
-    if (newPage >= 0 && newPage < this.pageInfo.totalPages) {
-      this.page = newPage;
-      this.getAll();
-    }
+    this.page = newPage;
+    this.getAll();
   }
-
-  changePageSize(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    this.size = Number(selectElement.value);
-    this.page = 0;
+  
+  changePageSize(newSize: number) {
+    this.size = newSize;
+    this.page = 0;  
     this.getAll();
   }
 

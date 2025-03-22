@@ -74,32 +74,9 @@
         </tbody>
     </table>
     <!-- Paginantion -->
-    <div class="pagination-controls">
-        <button (click)="changePage(0)" [disabled]="page === 0">
-            <i class="fa-solid fa-angles-left"></i>
-        </button>
-        <button (click)="changePage(page - 1)" [disabled]="page === 0">
-            <i class="fa-solid fa-angle-left"></i>
-        </button>
-
-        <ng-container *ngFor="let p of [].constructor(pageInfo?.totalPages); let i = index">
-            <button (click)="changePage(i)" [class.active]="page === i">{{ i + 1 }}</button>
-        </ng-container>
-
-        <button (click)="changePage(page + 1)" [disabled]="page === pageInfo?.totalPages - 1">
-            <i class="fa-solid fa-angle-right"></i>
-        </button>
-        <button (click)="changePage(pageInfo?.totalPages - 1)" [disabled]="page === pageInfo?.totalPages - 1">
-            <i class="fa-solid fa-angles-right"></i>
-        </button>
-
-        <label class="text-white ml-10">Page size: </label>
-        <select (change)="changePageSize($event)" class="bg-gray-800 text-white border border-gray-300 rounded-md">
-            <option [value]="5" selected>5</option>
-            <option [value]="10">10</option>
-            <option [value]="20">20</option>
-        </select>
-    </div>
+    <app-pagination [page]="page" [size]="size" [totalPages]="pageInfo?.totalPages" (pageChange)="changePage($event)"
+        (sizeChange)="changePageSize($event)">
+    </app-pagination>
 
     <!-- Create/Update -->
     <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>
