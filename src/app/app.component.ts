@@ -3,8 +3,8 @@ import { Router, RouterOutlet } from '@angular/router';
 import { SharedModule } from './modules/shared/shared.module';
 import { StorageService } from './services/storage/storage.service';
 import { AuthService } from './services/auth/auth.service';
-import { ToastComponent } from "./modules/common/toast/toast.component";
 import { ToastService } from './services/toast/toast.service';
+import { ToastComponent } from './modules/shared/toast/toast.component';
 
 @Component({
   selector: 'app-root',

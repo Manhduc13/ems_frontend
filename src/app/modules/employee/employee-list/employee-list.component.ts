@@ -6,7 +6,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
 import { ReportService } from '../../../services/report/report.service';
-import { PaginationComponent } from '../../common/pagination/pagination.component';
+import { PaginationComponent } from '../../shared/pagination/pagination.component';
 
 @Component({
   selector: 'app-employee-list',

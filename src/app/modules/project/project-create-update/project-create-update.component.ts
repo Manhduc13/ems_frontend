@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
-import { LoadingComponent } from '../../common/loading/loading.component';
+import { LoadingComponent } from '../../shared/loading/loading.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProjectService } from '../../../services/project/project.service';
 import { ToastService } from '../../../services/toast/toast.service';

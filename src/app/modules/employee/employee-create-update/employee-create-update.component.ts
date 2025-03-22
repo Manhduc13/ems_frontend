@@ -5,7 +5,7 @@ import { RoleService } from '../../../services/role/role.service';
 import { EmployeeService } from '../../../services/employee/employee.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { CloudinaryService } from '../../../services/cloudinary/cloudinary.service';
-import { LoadingComponent } from '../../common/loading/loading.component';
+import { LoadingComponent } from '../../shared/loading/loading.component';
 
 @Component({
   selector: 'app-employee-create-update',
