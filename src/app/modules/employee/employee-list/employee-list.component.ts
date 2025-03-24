@@ -146,13 +146,22 @@ export class EmployeeListComponent {
   }
 
   delete(id: number) {
-    this.employeeService.delete(id).subscribe((res) => {
-      console.log(res);
-      if (res.deleted) {
-        this.toastService.showToast("Delete employee successfully", "success");
-        this.search();
-      } else {
-        this.toastService.showToast("Delete employee failed", "error");
+    this.employeeService.delete(id).subscribe({
+      next: (res) => {
+        if (res.deleted) {
+          this.toastService.showToast("Delete employee successfully", "success");
+          this.search();
+        } else {
+          this.toastService.showToast("Delete employee failed", "error");
+        }
+      },
+      error: (err) => {
+        if (err.status === 400) {
+          //alert("Cannot delete this employee because it is referenced in a project");
+          this.toastService.showToast("Cannot delete this employee because it is referenced in a project", "error"); 
+        } else {
+          this.toastService.showToast("An unexpected error occurred", "error");
+        }
       }
     });
   }
