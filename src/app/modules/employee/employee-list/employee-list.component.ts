@@ -43,7 +43,7 @@ export class EmployeeListComponent {
 
   ngOnInit() {
     this.initializeSearchForm();
-    this.getAll();
+    this.search();
   }
 
   initializeSearchForm() {
@@ -52,7 +52,7 @@ export class EmployeeListComponent {
     });
   }
 
-  getAll() {
+  search() {
     const keywordValue = this.searchForm.value.keyword?.trim();
 
     const filter = {
@@ -83,23 +83,19 @@ export class EmployeeListComponent {
 
   changePage(newPage: number) {
     this.page = newPage;
-    this.getAll();
+    this.search();
   }
   
   changePageSize(newSize: number) {
     this.size = newSize;
     this.page = 0; 
-    this.getAll();
-  }
-
-  search() {
-    this.getAll();
+    this.search();
   }
 
   reset() {
     this.searchForm.reset({ keyword: '' }); 
     this.page = 0;
-    this.getAll();
+    this.search();
   }
 
   viewDetail(employee: any) {
@@ -154,7 +150,7 @@ export class EmployeeListComponent {
       console.log(res);
       if (res.deleted) {
         this.toastService.showToast("Delete employee successfully", "success");
-        this.getAll();
+        this.search();
       } else {
         this.toastService.showToast("Delete employee failed", "error");
       }

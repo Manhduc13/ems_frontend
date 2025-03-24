@@ -21,9 +21,7 @@ export class AppComponent {
   isLogin = false;
 
   mainMenu = [
-    // { label: 'Home', link: '/' },
-    { label: 'About', link: '/' },
-    // { label: 'Services', link: '/services' },
+    { label: 'Home', link: '/' },
     { label: 'Contact', link: '/contact' }
   ];
 

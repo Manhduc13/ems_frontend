@@ -61,7 +61,7 @@
                 </td>
                 <td>
                     <span class="px-2.5 py-2 inline-flex rounded-full text-white"
-                        [ngClass]="employee.active ? 'bg-green-500 text-green-800' : 'bg-red-100 text-red-800'">
+                        [ngClass]="employee.active ? 'bg-green-600 text-green-800' : 'bg-red-600 text-red-800'">
                         {{ employee.active ? 'Active' : 'Inactive' }}
                     </span>
                 </td>
@@ -80,12 +80,12 @@
 
     <!-- Create/Update -->
     <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>
-        <app-employee-create-update [employee]="selectedEmployee" (close)="closeForm()" (refresh)="getAll()">
+        <app-employee-create-update [employee]="selectedEmployee" (close)="closeForm()" (refresh)="search()">
         </app-employee-create-update>
     </div>
     <!--View Employee Detail -->
     <div *ngIf="showDetailPage" class="mt-6" #detailForm>
         <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailPage()"
-            (refresh)="getAll()"></app-employee-detail>
+            (refresh)="search()"></app-employee-detail>
     </div>
 </div>
