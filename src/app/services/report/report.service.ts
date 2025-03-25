@@ -12,28 +12,17 @@ export class ReportService {
 
   constructor(
     private http: HttpClient,
-    private storageService: StorageService
   ) { }
 
   generateEmployeeReport(): Observable<Blob> {
     return this.http.get(`${BASE_URL}/employee`, {
       responseType: 'blob',
-      headers: this.createAuthorizationHeader()
     });
   }
 
   generateProjectReport(): Observable<any> {
     return this.http.get(`${BASE_URL}/project`, {
       responseType: 'blob',
-      headers: this.createAuthorizationHeader()
     })
-  }
-
-  createAuthorizationHeader(): HttpHeaders {
-    let authHeaders: HttpHeaders = new HttpHeaders();
-    return authHeaders.set(
-      'Authorization',
-      'Bearer ' + this.storageService.getToken()
-    );
   }
 }

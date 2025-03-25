@@ -11,26 +11,13 @@ export class RoleService {
 
   constructor(
       private http: HttpClient,
-      private storageService: StorageService
     ) { }
 
   getAll(){
-    return this.http.get(BASE_URL, {
-      headers: this.createAuthorizationHeader()
-    });
+    return this.http.get(BASE_URL);
   }
 
   getById(id: number){
-    return this.http.get(`${BASE_URL}/${id}`, {
-      headers: this.createAuthorizationHeader()
-    });
+    return this.http.get(`${BASE_URL}/${id}`);
   }
-
-  createAuthorizationHeader(): HttpHeaders {
-      let authHeaders: HttpHeaders = new HttpHeaders();
-      return authHeaders.set(
-        'Authorization',
-        'Bearer ' + this.storageService.getToken()
-      );
-    }
 }

@@ -1,12 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import {Injectable} from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StorageService {
 
-  constructor() {
-  }
+  constructor() {}
 
   saveToken(token: string) {
     this.removeToken();
@@ -24,6 +25,11 @@ export class StorageService {
 
   removeUserInfo() {
     window.localStorage.removeItem("userInfo");
+  }
+
+  clear() {
+    this.removeToken();
+    this.removeUserInfo();
   }
 
   getToken(): string | null {

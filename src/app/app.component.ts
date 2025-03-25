@@ -35,44 +35,40 @@ export class AppComponent {
     private authService: AuthService,
     private toastService: ToastService,
     private router: Router,
-  ){}
+  ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.authService.getIsLoggedIn().subscribe((res) => {
       this.isLogin = res;
       this.currentUser = this.storageService.getUserInfo();
     });
 
     this.isAuthenticated();
-    
+
   }
 
-  logout(){
+  logout() {
     this.storageService.removeToken();
     this.storageService.removeUserInfo();
     this.authService.setIsLoggedIn(false);
     this.toastService.showToast("Logout successfully", "success");
     this.router.navigateByUrl("/");
   }
-  
-  toProfilePage(){
+
+  toProfilePage() {
     this.router.navigateByUrl("/employees/profile");
   }
 
-  isAuthenticated(){
+  isAuthenticated() {
     this.token = this.storageService.getToken() ?? "";
     if (this.token) {
-      this.authService.validateToken(this.token).subscribe((res) => {
-        if(res.verify){
-          this.isLogin = true;
-        } else {
-          this.isLogin = false;
-          this.storageService.removeToken();
-          this.storageService.removeUserInfo();
-        }
-      });
-    } else {
-      this.isLogin = false;
+      if (this.authService.validateToken()) {
+        this.isLogin = true;
+      } else {
+        this.isLogin = false;
+        this.storageService.removeToken();
+        this.storageService.removeUserInfo();
+      }
     }
   }
 }
