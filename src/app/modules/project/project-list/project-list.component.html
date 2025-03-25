@@ -59,7 +59,7 @@
         </tbody>
     </table>
     <!-- Paginantion -->
-    <app-pagination [page]="page" [size]="size" [totalPages]="pageInfo?.totalPages" (pageChange)="changePage($event)"
+    <app-pagination [page]="page" [size]="size" [totalPages]="pageInfo?.totalPages" [totalElements]="pageInfo?.totalElements" (pageChange)="changePage($event)"
         (sizeChange)="changePageSize($event)">
     </app-pagination>
 

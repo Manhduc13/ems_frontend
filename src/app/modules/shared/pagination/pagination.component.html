@@ -1,26 +1,35 @@
-<div class="pagination-controls">
-    <button (click)="changePage(0)" [disabled]="page === 0">
-        <i class="fa-solid fa-angles-left"></i>
-    </button>
-    <button (click)="changePage(page - 1)" [disabled]="page === 0">
-        <i class="fa-solid fa-angle-left"></i>
-    </button>
+<div class="flex flex-row justify-between items-center">
+    <div>
+        <label class="text-white">Page size: </label>
+        <select (change)="changePageSize($event)" class="bg-gray-800 text-white border border-gray-300 rounded-md">
+            <option [value]="5" [selected]="size === 5">5</option>
+            <option [value]="10" [selected]="size === 10">10</option>
+            <option [value]="20" [selected]="size === 20">20</option>
+        </select>
+    </div>
 
-    <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
-        <button (click)="changePage(i)" [class.active]="page === i">{{ i + 1 }}</button>
-    </ng-container>
+    <div class="pagination-controls">
+        <button (click)="changePage(0)" [disabled]="page === 0">
+            <i class="fa-solid fa-angles-left"></i>
+        </button>
+        <button (click)="changePage(page - 1)" [disabled]="page === 0">
+            <i class="fa-solid fa-angle-left"></i>
+        </button>
 
-    <button (click)="changePage(page + 1)" [disabled]="page === totalPages - 1">
-        <i class="fa-solid fa-angle-right"></i>
-    </button>
-    <button (click)="changePage(totalPages - 1)" [disabled]="page === totalPages - 1">
-        <i class="fa-solid fa-angles-right"></i>
-    </button>
+        <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+            <button (click)="changePage(i)" [class.active]="page === i">{{ i + 1 }}</button>
+        </ng-container>
 
-    <label class="text-white ml-10">Page size: </label>
-    <select (change)="changePageSize($event)" class="bg-gray-800 text-white border border-gray-300 rounded-md">
-        <option [value]="5" [selected]="size === 5">5</option>
-        <option [value]="10" [selected]="size === 10">10</option>
-        <option [value]="20" [selected]="size === 20">20</option>
-    </select>
+        <button (click)="changePage(page + 1)" [disabled]="page === totalPages - 1">
+            <i class="fa-solid fa-angle-right"></i>
+        </button>
+        <button (click)="changePage(totalPages - 1)" [disabled]="page === totalPages - 1">
+            <i class="fa-solid fa-angles-right"></i>
+        </button>
+    </div>
+
+    <div>
+        <span class=text-white>{{page * size +1}} - {{size * (page+1) | min: totalElements }} of
+            {{totalElements}}</span>
+    </div>
 </div>
