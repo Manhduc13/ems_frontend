@@ -25,9 +25,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
 
   const tokenExpired = authService.validateToken();
 
-  console.log("Token expired:", tokenExpired);
-
-  if (tokenExpired) {
+  if (!tokenExpired) {
     toastService.showToast("Token expired. Please login again", "warning");
     localStorage.clear();
     router.navigate(['/login']);

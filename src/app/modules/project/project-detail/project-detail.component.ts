@@ -24,7 +24,7 @@ export class ProjectDetailComponent {
     {value: 'PLANNED', label: 'Planned'},
     {value: 'IN_PROGRESS', label: 'In Progress'},
     {value: 'COMPLETED', label: 'Completed'},
-    {value: 'OM_HOLD', label: 'On Hold'},
+    {value: 'ON_HOLD', label: 'On Hold'},
     {value: 'CANCELLED', label: 'Cancelled'},
   ];
 

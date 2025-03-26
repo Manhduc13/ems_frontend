@@ -23,6 +23,7 @@ export class AuthService {
 
   validateToken(): boolean {
     const token = this.storageService.getToken();
+    
     if (!token) {
       this.toastService.showToast("Token not found", "warning");
       return false;
@@ -38,7 +39,7 @@ export class AuthService {
       console.log("Token Expiration:", expirationDate);
       console.log("Current Time:", currentTime);
 
-      return expirationDate < currentTime;
+      return expirationDate > currentTime;
     } catch (error) {
       console.log("Failed to decode token:", error);
       return false;
