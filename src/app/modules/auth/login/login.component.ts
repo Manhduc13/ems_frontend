@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 export class LoginComponent {
   loginForm!: FormGroup;
 
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -26,6 +27,18 @@ export class LoginComponent {
   }
 
   ngOnInit() {
+    this.isLogin();
+    this.inititializeForm();
+  }
+
+  isLogin() {
+    const isLogin = this.authService.validateToken();
+    if(isLogin) {
+      this.router.navigateByUrl("/");
+    }
+  }
+
+  inititializeForm() {
     this.loginForm = this.fb.group({
       username: [null, Validators.required],
       password: [null, Validators.required],
@@ -37,7 +50,6 @@ export class LoginComponent {
       if (res) {
         this.toastService.showToast("Login successfully", "success");
         this.storageService.saveToken(res.accessToken);
-        this.storageService.saveUserInfo(res.employeeInfoDTO);
         this.authService.setIsLoggedIn(true);
         this.router.navigateByUrl("/employees");
       }

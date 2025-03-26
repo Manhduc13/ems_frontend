@@ -5,6 +5,7 @@ import { StorageService } from './services/storage/storage.service';
 import { AuthService } from './services/auth/auth.service';
 import { ToastService } from './services/toast/toast.service';
 import { ToastComponent } from './modules/shared/toast/toast.component';
+import { EmployeeService } from './services/employee/employee.service';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ export class AppComponent {
 
   constructor(
     private storageService: StorageService,
+    private employeeService: EmployeeService,
     private authService: AuthService,
     private toastService: ToastService,
     private router: Router,
@@ -40,7 +42,10 @@ export class AppComponent {
   ngOnInit() {
     this.authService.getIsLoggedIn().subscribe((res) => {
       this.isLogin = res;
-      this.currentUser = this.storageService.getUserInfo();
+      const username = this.storageService.getUsernameFromToken();
+      this.currentUser = this.employeeService.getByUsername(username).subscribe((res) => {
+        this.currentUser = res;
+      });
     });
 
     this.isAuthenticated();
@@ -49,7 +54,6 @@ export class AppComponent {
 
   logout() {
     this.storageService.removeToken();
-    this.storageService.removeUserInfo();
     this.authService.setIsLoggedIn(false);
     this.toastService.showToast("Logout successfully", "success");
     this.router.navigateByUrl("/");
@@ -67,7 +71,6 @@ export class AppComponent {
       } else {
         this.isLogin = false;
         this.storageService.removeToken();
-        this.storageService.removeUserInfo();
       }
     }
   }
