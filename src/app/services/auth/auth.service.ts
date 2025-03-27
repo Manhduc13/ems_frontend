@@ -31,13 +31,9 @@ export class AuthService {
 
     try {
       const decoded: any = jwtDecode(token);
-      console.log("Token decoded:", decoded);
       
       const currentTime = Date.now() / 1000; 
       const expirationDate = decoded.exp;
-      
-      console.log("Token Expiration:", expirationDate);
-      console.log("Current Time:", currentTime);
 
       return expirationDate > currentTime;
     } catch (error) {

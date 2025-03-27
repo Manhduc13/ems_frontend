@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -14,30 +13,27 @@ export class StorageService {
     window.localStorage.setItem("token", token);
   }
 
-  saveUserInfo(user: any) {
-    this.removeUserInfo();
-    window.localStorage.setItem("userInfo", JSON.stringify(user));
-  }
-
   removeToken() {
     window.localStorage.removeItem("token");
-  }
-
-  removeUserInfo() {
-    window.localStorage.removeItem("userInfo");
-  }
-
-  clear() {
-    this.removeToken();
-    this.removeUserInfo();
   }
 
   getToken(): string | null {
     return window.localStorage.getItem("token");
   }
 
-  getUserInfo(): any {
-    const userInfoString = window.localStorage.getItem("userInfo");
-    return userInfoString ? JSON.parse(userInfoString) : null;
+  decodeToken(): any {
+    const token = this.getToken() ?? "";
+    const decoded: any = jwtDecode(token);
+    return decoded;
+  }
+
+  getUsernameFromToken(): string {
+    const decodedToken = this.decodeToken();
+    return decodedToken.sub;
+  }
+
+  getRoleFromToken(): string {
+    const decodedToken = this.decodeToken();
+    return decodedToken.roles;
   }
 }

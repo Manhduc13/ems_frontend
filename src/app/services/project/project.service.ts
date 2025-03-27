@@ -14,18 +14,18 @@ export class ProjectService {
     private http: HttpClient,
   ) { }
 
+  searchWithFilter(filter: any): Observable<any> {
+    return this.http.get(BASE_URL + "/search", {
+      params: filter,
+    });
+  }
+
   getById(id: number): Observable<any> {
     return this.http.get(`${BASE_URL}/getById/${id}`);
   }
 
   getAll(): Observable<any> {
     return this.http.get(BASE_URL);
-  }
-
-  searchWithFilter(filter: any): Observable<any> {
-    return this.http.get(BASE_URL + "/search", {
-      params: filter,
-    });
   }
 
   create(request: any): Observable<any> {
@@ -52,15 +52,11 @@ export class ProjectService {
     return this.http.put(`${BASE_URL}/removeMember/${projectId}/${employeeId}`, null);
   }
 
-  setAsLeader(projectId: number, employeeId: number): Observable<any> {
+  chooseLeader(projectId: number, employeeId: number): Observable<any> {
     return this.http.put(`${BASE_URL}/chooseLeader/${projectId}/${employeeId}`, null);
   }
 
-  getMembers(id: number): Observable<any> {
-    return this.http.get(`${BASE_URL}/getMembers/${id}`);
-  }
-
-  getNotMembers(id: number): Observable<any> {
-    return this.http.get(`${BASE_URL}/getNotMembers/${id}`);
+  findProjectsOfEmployee(employeeId: number): Observable<any> {
+    return this.http.get(`${BASE_URL}/getByEmployee/${employeeId}`);
   }
 }

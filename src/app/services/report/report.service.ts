@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StorageService } from '../storage/storage.service';
 import { Observable } from 'rxjs';
 
 const BASE_URL = "http://localhost:8080/api/report";
@@ -14,14 +13,14 @@ export class ReportService {
     private http: HttpClient,
   ) { }
 
-  generateEmployeeReport(): Observable<Blob> {
-    return this.http.get(`${BASE_URL}/employee`, {
+  generateEmployeeReport(username: string): Observable<Blob> {
+    return this.http.get(`${BASE_URL}/employee/${username}`, {
       responseType: 'blob',
     });
   }
 
-  generateProjectReport(): Observable<any> {
-    return this.http.get(`${BASE_URL}/project`, {
+  generateProjectReport(username: string): Observable<any> {
+    return this.http.get(`${BASE_URL}/project/${username}`, {
       responseType: 'blob',
     })
   }

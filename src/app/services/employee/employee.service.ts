@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StorageService } from '../storage/storage.service';
 import { Observable } from 'rxjs';
 
 const BASE_URL = "http://localhost:8080/api/employees";
@@ -28,6 +27,10 @@ export class EmployeeService {
     return this.http.get(`${BASE_URL}/getById/${id}`);
   }
 
+  getByUsername(username: string): Observable<any> {
+    return this.http.get(`${BASE_URL}/getByUsername/${username}`);
+  }
+
   create(request: any): Observable<any> {
     return this.http.post(BASE_URL + "/create", request);
   }
@@ -48,7 +51,11 @@ export class EmployeeService {
     return this.http.put(`${BASE_URL}/changePassword/${id}`, request);
   }
 
-  getCurrentEmployee(): Observable<any> {
-    return this.http.get(`${BASE_URL}/myInfo`)
+  findEmployeesInProject(projectId: number): Observable<any> {
+    return this.http.get(`${BASE_URL}/getByProject/${projectId}`);
+  }
+
+  findEmployeesNotInProject(projectId: number): Observable<any> {
+    return this.http.get(`${BASE_URL}/getNotInProject/${projectId}`);
   }
 }
