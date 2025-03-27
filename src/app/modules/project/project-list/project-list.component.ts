@@ -27,6 +27,8 @@ export class ProjectListComponent {
   isDeleteModalOpen = false;
   selectedProjectId: number | null = null;
 
+  isManager: boolean = false;
+
   keyword: any;
   page: number = 0;
   size: number = 5;
@@ -45,6 +47,13 @@ export class ProjectListComponent {
   ngOnInit() {
     this.initializeForm();
     this.search();
+    this.checkManagerRole();
+  }
+
+  checkManagerRole() {
+    const role = this.storageService.getRoleFromToken();
+    console.log(role);
+    this.isManager = role.includes("MANAGER")
   }
 
   initializeForm() {

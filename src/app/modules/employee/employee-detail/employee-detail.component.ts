@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { ToastService } from '../../../services/toast/toast.service';
 import { EmployeeService } from '../../../services/employee/employee.service';
+import { StorageService } from '../../../services/storage/storage.service';
 
 @Component({
   selector: 'app-employee-detail',
@@ -16,16 +17,25 @@ export class EmployeeDetailComponent {
   @Output() refresh = new EventEmitter<void>();
 
   currentStatus: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private toastService: ToastService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
     if (this.employee) {
       this.currentStatus = this.employee.active;
     }
+    this.checkAdminRole();
+  }
+
+  checkAdminRole() {
+    const role = this.storageService.getRoleFromToken();
+    console.log(role);
+    this.isAdmin = role.includes("ADMIN") // Chỉ ADMIN mới có quyền
   }
 
   changeStatus() {

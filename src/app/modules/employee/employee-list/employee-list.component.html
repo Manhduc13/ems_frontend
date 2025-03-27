@@ -21,7 +21,7 @@
                 Generate Report
             </button>
 
-            <button
+            <button *ngIf="isAdmin"
                 class="bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors px-4 py-2"
                 (click)="openCreateUpdateModal()">
                 New Employee
@@ -64,9 +64,9 @@
                         <i class="fas fa-eye text-green-500 hover:text-green-700"
                             (click)="openDetailModal(employee)"></i>
                         <i class="fas fa-edit text-blue-600 hover:text-blue-900"
-                            (click)="openCreateUpdateModal(employee)"></i>
+                            (click)="openCreateUpdateModal(employee)" *ngIf="isAdmin"></i>
                         <i class="fas fa-trash text-red-600 hover:text-red-900"
-                            (click)="openConfirmDeleteModal(employee.id)"></i>
+                            (click)="openConfirmDeleteModal(employee.id)" *ngIf="isAdmin"></i>
                     </td>
                 </tr>
             </tbody>

@@ -78,12 +78,12 @@ export class ProfileComponent {
 
   loadProjectOfEmployee() {
     console.log("Đã vào đến load project");
-    
+
     if (this.employee) {
       this.projectService.findProjectsOfEmployee(this.employee.id).subscribe({
         next: (res) => {
           console.log(res);
-          
+
           this.projects = res;
         },
         error: (err) => {
@@ -129,13 +129,15 @@ export class ProfileComponent {
           this.toastService.showToast("Change password successfully", "success");
           this.toastService.showToast("You need to login again!", "info");
           this.router.navigateByUrl("/login");
-        }, error: (err) => {
+        },
+        error: (err) => {
+          console.error("Error Response:", err); 
           this.toastService.showToast("Change password failed", "error");
-          console.log("Error: ", err);
         }
-      })
+      });
     }
   }
+
 
   closeChangePasswordForm() {
     this.changePassword = false;

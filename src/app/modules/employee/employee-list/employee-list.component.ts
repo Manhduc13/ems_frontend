@@ -25,6 +25,8 @@ export class EmployeeListComponent {
   isDeleteModalOpen = false;
   selectedEmployeeId: number | null = null;
 
+  isAdmin: boolean = false;
+
   keyword: any;
   page: number = 0;
   size: number = 5;
@@ -45,6 +47,13 @@ export class EmployeeListComponent {
   ngOnInit() {
     this.initializeSearchForm();
     this.search();
+    this.checkAdminRole();
+  }
+
+  checkAdminRole() {
+    const role = this.storageService.getRoleFromToken();
+    console.log(role);
+    this.isAdmin = role.includes("ADMIN");
   }
 
   initializeSearchForm() {
@@ -113,6 +122,8 @@ export class EmployeeListComponent {
     this.selectedEmployee = employee;
     this.isCreateUpdateModalOpen = false;
     this.isDetailModalOpen = true;
+    console.log(this.isAdmin);
+    
   }
 
   closeDetailModal() {

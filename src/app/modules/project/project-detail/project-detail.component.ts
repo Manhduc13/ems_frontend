@@ -3,6 +3,7 @@ import { ProjectService } from '../../../services/project/project.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { SharedModule } from '../../shared/shared.module';
 import { EmployeeService } from '../../../services/employee/employee.service';
+import { StorageService } from '../../../services/storage/storage.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -19,7 +20,7 @@ export class ProjectDetailComponent {
   members: any[] = [];
   employees: any[] = [];
 
-  columns: String[] = ['Name', 'Phone', 'Email', 'Position', 'Department', 'Actions'];
+  columns: String[] = ['Name', 'Phone', 'Email', 'Position', 'Department'];
   statuses: any[] = [
     {value: 'PLANNED', label: 'Planned'},
     {value: 'IN_PROGRESS', label: 'In Progress'},
@@ -31,9 +32,12 @@ export class ProjectDetailComponent {
   selectedEmployeeId: number | null = null;
   selectedStatus: string = '';
 
+  isManager: boolean = false;
+
   constructor(
     private projectService: ProjectService,
     private employeeService: EmployeeService,
+    private storageService: StorageService,
     private toastService: ToastService
   ) { }
 
@@ -41,6 +45,13 @@ export class ProjectDetailComponent {
     this.selectedStatus = this.project.status;
     this.loadMemberTable();
     this.loadOtherEmployees();
+    this.checkManagerRole();
+  }
+
+  checkManagerRole() {
+    const role = this.storageService.getRoleFromToken();
+    console.log(role);
+    this.isManager = role.includes("MANAGER")
   }
 
   changeStatus(){

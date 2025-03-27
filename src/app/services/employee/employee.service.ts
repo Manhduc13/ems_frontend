@@ -47,8 +47,8 @@ export class EmployeeService {
     return this.http.delete(`${BASE_URL}/delete/${id}`);
   }
 
-  changePassword(id: number, request: any): Observable<any> {
-    return this.http.put(`${BASE_URL}/changePassword/${id}`, request);
+  changePassword(id: number, data: any) {
+    return this.http.post<{ message: string }>(`/api/changePassword/${id}`, data);
   }
 
   findEmployeesInProject(projectId: number): Observable<any> {
