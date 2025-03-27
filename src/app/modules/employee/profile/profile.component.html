@@ -1,140 +1,168 @@
 <div class="h-screen duration-200">
-    <div class="w-full">
-        <div class="bg-gray-800 overflow-hidden duration-200">
-            <div class="relative h-120">
-                <img src="https://res.cloudinary.com/djv4xa6wu/image/upload/v1735722161/AbhirajK/Abhirajk2.webp"
-                    alt="cover" class="w-full h-full object-cover">
-                <div class="absolute -bottom-12 left-6">
-                    <img [src]="employee?.avatar" alt="Profile"
-                        class="w-40 h-40 rounded-xl object-cover border-4 border-gray-800 shadow-lg">
+    <div class="w-full bg-gray-800 overflow-hidden duration-200">
+        <div class="relative h-120">
+            <img src="https://res.cloudinary.com/djv4xa6wu/image/upload/v1735722161/AbhirajK/Abhirajk2.webp" alt="cover"
+                class="w-full h-full object-cover">
+            <div class="absolute -bottom-12 left-6">
+                <img [src]="employee?.avatar" alt="Profile"
+                    class="w-40 h-40 rounded-xl object-cover border-4 border-gray-800 shadow-lg">
+            </div>
+        </div>
+
+        <div class="pt-16 px-6 pb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">{{employee?.username}} -
+                        {{employee?.firstName}} {{employee?.lastName}}</h1>
+                    <p class="text-purple-400">Department: <span>{{employee?.department}}</span></p>
                 </div>
             </div>
 
-            <div class="pt-16 px-6 pb-6">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                        <h1 class="text-2xl font-bold text-white">{{employee?.username}} -
-                            {{employee?.firstName}} {{employee?.lastName}}</h1>
-                        <p class="text-purple-400">Java Developer & Backend Expert</p>
-                    </div>
-                </div>
+            <p class="mt-6 text-gray-300">
+                Hi, I'm a passionate developer with expertise in Java, Angular, and Tailwind CSS. I love building
+                efficient and scalable web applications.
+            </p>
 
-                <p class="mt-6 text-gray-300">
-                    Hi, I'm a passionate developer with expertise in Java, Angular, and Tailwind CSS. I love building
-                    efficient and scalable web applications.
-                </p>
-
-                <div class="mt-6">
-                    <h2 class="text-lg font-semibold text-white mb-3">Roles</h2>
-                    <div class="flex flex-wrap gap-2">
-                        <span *ngFor="let role of employee?.roles"
-                            class="px-3 py-1 bg-purple-900 text-purple-300 rounded-lg text-sm font-medium">
-                            {{role?.name}}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Date of Birth</h2>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="px-3 py-1 bg-purple-900 text-purple-300 rounded-lg text-sm font-medium">
-                            {{ employee?.dob | date: 'dd / MM / yyyy' }}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="mt-6">
-                    <h2 class="text-lg font-semibold text-white mb-3">Contact</h2>
-                    <div
-                        class="flex flex-col space-y-3 *:inline-flex *:items-center *:text-purple-400 *:hover:underline">
-                        <a [href]="'mailto:' + employee?.email">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            {{employee?.email}}
-                        </a>
-                        <a [href]="'tel:' + employee?.phone">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                            </svg>
-                            {{employee?.phone}}
-                        </a>
-                        <a [href]="getGoogleMapsUrl(employee?.address)" target="_blank">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" />
-                            </svg>
-                            {{ employee?.address }}
-                        </a>
-                    </div>
-                </div>
-
-                <div class="mt-6" *ngIf="!changePassword">
-                    <button (click)="getChangePasswordForm()"
-                        class="text-white p-2 bg-blue-500 hover:bg-blue-600 flex items-center space-x-2 rounded-md">Change
-                        Password</button>
-                </div>
-
-                <form [formGroup]="changePasswordForm" class="flex w-full flex-col" *ngIf="changePassword"
-                    #changePasswordFormRef>
-                    <div class="flex w-full flex-row justify-between my-6">
-                        <div class="w-[32%]">
-                            <label class="block text-md font-medium text-white mb-1">Old Password <span
-                                    class="text-red-500">*</span></label>
-                            <input type="text" formControlName="oldPassword"
-                                class="w-full px-4 py-2 bg-gray-500 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
-                            <div class="error text-red-500 mt-2"
-                                *ngIf="changePasswordForm.controls['oldPassword'].invalid && changePasswordForm.controls['oldPassword'].touched">
-                                <span *ngIf="changePasswordForm.controls['oldPassword'].errors?.['required']">Old
-                                    Password
-                                    is required.</span>
-                            </div>
-                        </div>
-                        <div class="w-[32%]">
-                            <label class="block text-md font-medium text-white mb-1">New Password <span
-                                    class="text-red-500">*</span></label>
-                            <input type="password" formControlName="newPassword"
-                                placeholder="At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"
-                                class="w-full px-4 py-2 bg-gray-500 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
-                            <div class="error text-red-500 mt-2"
-                                *ngIf="changePasswordForm.controls['newPassword'].invalid && changePasswordForm.controls['newPassword'].touched">
-                                <span *ngIf="changePasswordForm.controls['newPassword'].errors?.['required']">New
-                                    Password
-                                    is
-                                    required.</span>
-                                <span *ngIf="changePasswordForm.controls['newPassword'].errors?.['pattern']">Invalid
-                                    password
-                                    format.</span>
-                            </div>
-                        </div>
-                        <div class="w-[32%]">
-                            <label class="block text-md font-medium text-white mb-1">Confirm Password <span
-                                    class="text-red-500">*</span></label>
-                            <input type="password" formControlName="confirmPassword"
-                                class="w-full px-4 py-2 bg-gray-500 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
-                            <div class="error text-red-500 mt-2"
-                                *ngIf="changePasswordForm.controls['confirmPassword'].invalid && changePasswordForm.controls['confirmPassword'].touched">
-                                <span
-                                    *ngIf="changePasswordForm.controls['confirmPassword'].errors?.['required']">Confirm
-                                    Password is required.</span>
-                            </div>
-                            <div class="error text-red-500 mt-2"
-                                *ngIf="changePasswordForm.get('confirmPassword')?.errors?.['passwordMismatch']">
-                                Passwords do not match.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="actions flex flex-row space-x-3 justify-end">
-                        <button (click)="closeChangePasswordForm()"
-                            class="text-white p-2 bg-slate-500 hover:bg-slate-600 flex items-center space-x-2 rounded-md">Cancel</button>
-                        <button (click)="submitForm()"
-                            class="text-white p-2 bg-blue-500 hover:bg-blue-600 flex items-center space-x-2 rounded-md">Submit</button>
-                    </div>
-                </form>
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-white mb-3">Position</h2>
+                <span class="px-3 py-1 bg-purple-900 text-purple-300 rounded-lg text-sm font-medium">
+                    {{ employee?.position }}
+                </span>
             </div>
+
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Date of Birth</h2>
+                <span class="px-3 py-1 bg-purple-900 text-purple-300 rounded-lg text-sm font-medium">
+                    {{ employee?.dob | date: 'dd / MM / yyyy' }}
+                </span>
+            </div>
+
+            <div class="mt-6">
+                <h2 class="text-lg font-semibold text-white mb-3">Contact</h2>
+                <div class="flex flex-col space-y-3 *:inline-flex *:items-center *:text-purple-400 *:hover:underline">
+                    <a [href]="'mailto:' + employee?.email">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        {{employee?.email}}
+                    </a>
+                    <a [href]="'tel:' + employee?.phone">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                        </svg>
+                        {{employee?.phone}}
+                    </a>
+                    <a [href]="getGoogleMapsUrl(employee?.address)" target="_blank">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" />
+                        </svg>
+                        {{ employee?.address }}
+                    </a>
+                </div>
+            </div>
+
+            <div class="my-6 flex flex-row space-x-3">
+                <button (click)="showProjectTable()"
+                    class="text-white p-2 bg-blue-500 hover:bg-blue-600 flex items-center space-x-2 rounded-md">
+                    Show project table
+                </button>
+                <button (click)="getChangePasswordForm()"
+                    class="text-white p-2 bg-blue-500 hover:bg-blue-600 flex items-center space-x-2 rounded-md">
+                    Change Password
+                </button>
+            </div>
+
+            <div class="overflow-x-auto" *ngIf="isShowProjectTable" #projectTableRef>
+                <table class="min-w-full divide-y divide-gray-600">
+                    <thead class="bg-gray-700">
+                        <tr class="*:px-6 *:py-3 *:text-left *:text-xs *:font-medium *:text-white *:uppercase">
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-600 bg-gray-600">
+                        <tr *ngFor="let project of projects; let i = index"
+                            class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
+                            <td>{{i + 1}}</td>
+                            <td>{{project.name}}</td>
+                            <td>{{project.description}}</td>
+                            <td>
+                                <span class="px-2.5 py-2 inline-flex rounded-full text-white lowercase" [ngClass]="{
+                                        'bg-gray-500': project.status === 'PLANNED',
+                                        'bg-yellow-500': project.status === 'IN_PROGRESS',
+                                        'bg-green-500': project.status === 'COMPLETED',
+                                        'bg-blue-500': project.status === 'ON_HOLD',
+                                        'bg-red-500': project.status === 'CANCELLED'
+                                    }">
+                                    {{ project.status.replace('_', ' ') }}
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <form [formGroup]="changePasswordForm" class="flex w-full flex-col" *ngIf="changePassword"
+                #changePasswordFormRef>
+                <div class="flex w-full flex-row justify-between my-6">
+                    <div class="w-[32%]">
+                        <label class="block text-md font-medium text-white mb-1">Old Password <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" formControlName="oldPassword"
+                            class="w-full px-4 py-2 bg-gray-500 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
+                        <div class="error text-red-500 mt-2"
+                            *ngIf="changePasswordForm.controls['oldPassword'].invalid && changePasswordForm.controls['oldPassword'].touched">
+                            <span *ngIf="changePasswordForm.controls['oldPassword'].errors?.['required']">Old
+                                Password
+                                is required.</span>
+                        </div>
+                    </div>
+                    <div class="w-[32%]">
+                        <label class="block text-md font-medium text-white mb-1">New Password <span
+                                class="text-red-500">*</span></label>
+                        <input type="password" formControlName="newPassword"
+                            placeholder="At least 8 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character"
+                            class="w-full px-4 py-2 bg-gray-500 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
+                        <div class="error text-red-500 mt-2"
+                            *ngIf="changePasswordForm.controls['newPassword'].invalid && changePasswordForm.controls['newPassword'].touched">
+                            <span *ngIf="changePasswordForm.controls['newPassword'].errors?.['required']">New
+                                Password
+                                is
+                                required.</span>
+                            <span *ngIf="changePasswordForm.controls['newPassword'].errors?.['pattern']">Invalid
+                                password
+                                format.</span>
+                        </div>
+                    </div>
+                    <div class="w-[32%]">
+                        <label class="block text-md font-medium text-white mb-1">Confirm Password <span
+                                class="text-red-500">*</span></label>
+                        <input type="password" formControlName="confirmPassword"
+                            class="w-full px-4 py-2 bg-gray-500 text-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all" />
+                        <div class="error text-red-500 mt-2"
+                            *ngIf="changePasswordForm.controls['confirmPassword'].invalid && changePasswordForm.controls['confirmPassword'].touched">
+                            <span *ngIf="changePasswordForm.controls['confirmPassword'].errors?.['required']">Confirm
+                                Password is required.</span>
+                        </div>
+                        <div class="error text-red-500 mt-2"
+                            *ngIf="changePasswordForm.get('confirmPassword')?.errors?.['passwordMismatch']">
+                            Passwords do not match.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions flex flex-row space-x-3 justify-end">
+                    <button (click)="closeChangePasswordForm()"
+                        class="text-white p-2 bg-slate-500 hover:bg-slate-600 flex items-center space-x-2 rounded-md">Cancel</button>
+                    <button (click)="submitForm()"
+                        class="text-white p-2 bg-blue-500 hover:bg-blue-600 flex items-center space-x-2 rounded-md">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

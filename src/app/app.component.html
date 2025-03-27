@@ -44,7 +44,7 @@
                 <img class="h-10 w-10 rounded-full" [src]="currentUser?.avatar ?? 'https://res.cloudinary.com/ddfqvag5q/image/upload/v1742184227/default_ncpebq.png'"
                 alt="avatar">
                 <span class="ml-2 text-sm font-medium dark:text-white hover:text-blue-500">
-                    {{ currentUser.username }}
+                    {{ currentUser?.username }}
                 </span>
             </div>
             <button (click)="logout()" *ngIf="isLogin"
