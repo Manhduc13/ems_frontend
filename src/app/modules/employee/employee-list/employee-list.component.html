@@ -55,10 +55,9 @@
                 <td>{{ employee.phone }}</td>
                 <td>{{ employee.email }}</td>
                 <td class="lowercase">
-                    <span *ngFor="let role of employee.roles; let last = last">
-                        {{ role.name }}{{ last ? '' : ', ' }}
-                    </span>
+                    <span>{{ employee.position }}</span>
                 </td>
+                <td>{{ employee.department }}</td>
                 <td>
                     <span class="px-2.5 py-2 inline-flex rounded-full text-white"
                         [ngClass]="employee.active ? 'bg-green-600 text-green-800' : 'bg-red-600 text-red-800'">

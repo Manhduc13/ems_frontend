@@ -25,7 +25,6 @@ export class AuthService {
     const token = this.storageService.getToken();
     
     if (!token) {
-      this.toastService.showToast("Token not found", "warning");
       return false;
     }
 

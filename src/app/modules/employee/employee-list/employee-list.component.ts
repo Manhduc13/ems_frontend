@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
 import { ReportService } from '../../../services/report/report.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
+import { StorageService } from '../../../services/storage/storage.service';
 
 @Component({
   selector: 'app-employee-list',
@@ -29,7 +30,7 @@ export class EmployeeListComponent {
 
   searchForm!: FormGroup;
 
-  columns: String[] = ['No', 'Name', 'Phone', 'Email', 'Role', 'Status', 'Actions'];
+  columns: String[] = ['No', 'Name', 'Phone', 'Email', 'Position', 'Department', 'Status', 'Actions'];
 
   @ViewChild('createUpdateForm') createUpdateForm!: ElementRef;
   @ViewChild('detailForm') detailForm!: ElementRef;
@@ -38,7 +39,8 @@ export class EmployeeListComponent {
     private fb: FormBuilder,
     private employeeService: EmployeeService,
     private toastService: ToastService,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit() {
@@ -85,15 +87,15 @@ export class EmployeeListComponent {
     this.page = newPage;
     this.search();
   }
-  
+
   changePageSize(newSize: number) {
     this.size = newSize;
-    this.page = 0; 
+    this.page = 0;
     this.search();
   }
 
   reset() {
-    this.searchForm.reset({ keyword: '' }); 
+    this.searchForm.reset({ keyword: '' });
     this.page = 0;
     this.search();
   }
@@ -124,6 +126,8 @@ export class EmployeeListComponent {
 
   toEditForm(employee: any) {
     this.selectedEmployee = employee;
+    console.log(employee);
+
     this.showDetailPage = false;
     this.showCreateUpdateForm = true;
 
@@ -158,7 +162,7 @@ export class EmployeeListComponent {
       error: (err) => {
         if (err.status === 400) {
           //alert("Cannot delete this employee because it is referenced in a project");
-          this.toastService.showToast("Cannot delete this employee because it is referenced in a project", "error"); 
+          this.toastService.showToast("Cannot delete this employee because it is referenced in a project", "error");
         } else {
           this.toastService.showToast("An unexpected error occurred", "error");
         }
@@ -167,7 +171,8 @@ export class EmployeeListComponent {
   }
 
   generateReport() {
-    this.reportService.generateEmployeeReport().subscribe({
+    let username = this.storageService.getUsernameFromToken();
+    this.reportService.generateEmployeeReport(username).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
