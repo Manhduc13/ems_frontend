@@ -7,6 +7,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ReportService } from '../../../services/report/report.service';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
+import { StorageService } from '../../../services/storage/storage.service';
 
 @Component({
   selector: 'app-project-list',
@@ -20,9 +21,11 @@ export class ProjectListComponent {
 
   searchForm!: FormGroup;
 
-  showCreateUpdateForm: boolean = false;
-  showDetailPage: boolean = false;
   selectedProject: any;
+  isCreateUpdateModalOpen = false;
+  isDetailModalOpen = false;
+  isDeleteModalOpen = false;
+  selectedProjectId: number | null = null;
 
   keyword: any;
   page: number = 0;
@@ -31,11 +34,9 @@ export class ProjectListComponent {
 
   columns: String[] = ['No', 'Name', 'Start Date', 'Budget', 'Status', 'Actions'];
 
-  @ViewChild('createUpdateForm') createUpdateForm!: ElementRef;
-  @ViewChild('detailForm') detailForm!: ElementRef;
-
   constructor(
     private projectService: ProjectService,
+    private storageService: StorageService,
     private toastService: ToastService,
     private fb: FormBuilder,
     private reportService: ReportService,
@@ -43,7 +44,7 @@ export class ProjectListComponent {
 
   ngOnInit() {
     this.initializeForm();
-    this.getAll();
+    this.search();
   }
 
   initializeForm() {
@@ -52,7 +53,7 @@ export class ProjectListComponent {
     });
   }
 
-  getAll() {
+  search() {
     const keywordValue = this.searchForm.value.keyword?.trim();
 
     const filter = {
@@ -77,17 +78,18 @@ export class ProjectListComponent {
 
   changePage(newPage: number) {
     this.page = newPage;
-    this.getAll();
+    this.search();
   }
   
   changePageSize(newSize: number) {
     this.size = newSize;
     this.page = 0;  
-    this.getAll();
+    this.search();
   }
 
   generateReport() {
-    this.reportService.generateProjectReport().subscribe({
+    const username = this.storageService.getUsernameFromToken();
+    this.reportService.generateProjectReport(username).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/pdf' });
         const url = window.URL.createObjectURL(blob);
@@ -100,71 +102,64 @@ export class ProjectListComponent {
     });
   }
 
-  search() {
-    this.getAll();
-  }
-
   reset() {
     this.searchForm.reset({ keyword: '' });
     this.page = 0;
-    this.getAll();
+    this.search();
   }
 
-  toCreateForm() {
+  openCreateUpdateModal(project?: any) {
+    this.selectedProject = project || null;
+    this.isCreateUpdateModalOpen = true;
+  }
+
+  closeCreateUpdateModal() {
+    this.isCreateUpdateModalOpen = false;
     this.selectedProject = null;
-    this.showDetailPage = false;
-    this.showCreateUpdateForm = true;
-    setTimeout(() => {
-      this.scrollToForm();
-    }, 100);
   }
 
-  toEditForm(project: any) {
+
+  openDetailModal(project: any) {
     this.selectedProject = project;
-    this.showDetailPage = false;
-    this.showCreateUpdateForm = true;
-
-    setTimeout(() => {
-      this.scrollToForm();
-    }, 100);
+    this.isCreateUpdateModalOpen = false;
+    this.isDetailModalOpen = true;
   }
 
-  viewDetail(project: any) {
-    this.selectedProject = project;
-    this.showCreateUpdateForm = false;
-    this.showDetailPage = true;
-
-    setTimeout(() => {
-      this.scrollToForm();
-    }, 100);
+  closeDetailModal() {
+    this.isDetailModalOpen = false;
   }
 
-  scrollToForm() {
-    if (this.createUpdateForm) {
-      this.createUpdateForm.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    if (this.detailForm) {
-      this.detailForm.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+  openConfirmDeleteModal(employeeId: number) {
+    this.selectedProjectId = employeeId;
+    this.isDeleteModalOpen = true;
   }
 
-  closeForm() {
-    this.showCreateUpdateForm = false;
+  closeConfirmDeleteModal() {
+    this.isDeleteModalOpen = false;
+    this.selectedProjectId = null;
   }
 
-  closeDetailPage() {
-    this.showDetailPage = false;
-  }
+  deleteEmployee() {
+    if (this.selectedProjectId === null) return;
 
-  delete(id: number) {
-    this.projectService.delete(id).subscribe((res) => {
-      if (res.deleted) {
-        this.toastService.showToast("Delete project successfully", "success");
-        this.getAll();
-      } else {
-        this.toastService.showToast("Delete project failed", "error");
+    this.projectService.delete(this.selectedProjectId).subscribe({
+      next: (res) => {
+        if (res.result) {
+          this.toastService.showToast("Delete project successfully", "success");
+          this.search();
+        } else {
+          this.toastService.showToast("Delete project failed", "error");
+        }
+        this.closeConfirmDeleteModal();
+      },
+      error: (err) => {
+        if (err.status === 400) {
+          this.toastService.showToast("Cannot delete this project because it is referenced in an employee", "error");
+        } else {
+          this.toastService.showToast("An unexpected error occurred", "error");
+        }
+        this.closeConfirmDeleteModal();
       }
     });
   }
-
 }

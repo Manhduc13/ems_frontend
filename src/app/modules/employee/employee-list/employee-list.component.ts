@@ -154,7 +154,7 @@ export class EmployeeListComponent {
   }
 
   generateReport() {
-    let username = this.storageService.getUsernameFromToken();
+    const username = this.storageService.getUsernameFromToken();
     this.reportService.generateEmployeeReport(username).subscribe({
       next: (response: Blob) => {
         const blob = new Blob([response], { type: 'application/pdf' });
