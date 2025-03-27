@@ -74,9 +74,8 @@
 
     <!-- Create/Update -->
     <div *ngIf="isCreateUpdateModalOpen"
-        class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18"
-        (click)="closeCreateUpdateModal()">
-        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto h-[85vh]">
+        class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18">
+        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto max-h-[85vh]">
             <app-project-create-update [project]="selectedProject" (close)="closeCreateUpdateModal()"
                 (refresh)="search()">
             </app-project-create-update>
@@ -84,17 +83,15 @@
     </div>
 
     <!-- Modal for Detail -->
-    <div *ngIf="isDetailModalOpen" class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18"
-        (click)="closeDetailModal()">
-        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto h-[85vh]">
+    <div *ngIf="isDetailModalOpen" class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18">
+        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto max-h-[85vh]">
             <app-project-detail [project]="selectedProject" (close)="closeDetailModal()" (refresh)="search()">
             </app-project-detail>
         </div>
     </div>
 
     <!-- Confirm Delete Modal -->
-    <div *ngIf="isDeleteModalOpen" class="fixed inset-0 flex justify-center items-center bg-gray-400/25 z-50"
-        (click)="closeConfirmDeleteModal()">
+    <div *ngIf="isDeleteModalOpen" class="fixed inset-0 flex justify-center items-center bg-gray-400/25 z-50">
         <div class="bg-gray-800 text-white p-6 rounded-lg w-[400px] text-center">
             <h2 class="text-xl font-semibold mb-4">Confirm Delete</h2>
             <p class="mb-6">Are you sure you want to delete this employee?</p>

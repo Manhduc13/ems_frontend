@@ -42,6 +42,7 @@
             </div>
         </div>
     </div>
+
     <div class="members-table">
         <div class="flex flex-row justify-between items-center">
             <h2 class="text-xl font-bold text-white my-8">Members:</h2>
@@ -69,7 +70,6 @@
             <tbody class=" divide-y divide-gray-200 bg-gray-600">
                 <tr *ngFor="let employee of members" class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white"
                     [ngClass]="{'bg-orange-600': employee.id === project?.leader_id}">
-                    <td>{{ employee.id}}</td>
                     <td>
                         <div class="flex items-center">
                             <div class="flex-shrink-0 h-10 w-10">
@@ -87,11 +87,8 @@
                     </td>
                     <td>{{ employee.phone }}</td>
                     <td>{{ employee.email }}</td>
-                    <td class="lowercase">
-                        <span *ngFor="let role of employee.roles; let last = last">
-                            {{ role.name }}{{ last ? '' : ', ' }}
-                        </span>
-                    </td>
+                    <td>{{ employee.position }}</td>
+                    <td>{{ employee.department }}</td>
                     <td class="space-x-3">
                         <ng-container *ngIf="employee.id !== project?.leader_id">
                             <span

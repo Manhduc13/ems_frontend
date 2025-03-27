@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { EmployeeService } from '../../../services/employee/employee.service';
 import { ProjectService } from '../../../services/project/project.service';
 import { ToastService } from '../../../services/toast/toast.service';
 import { SharedModule } from '../../shared/shared.module';
+import { EmployeeService } from '../../../services/employee/employee.service';
 
 @Component({
   selector: 'app-project-detail',
@@ -19,7 +19,7 @@ export class ProjectDetailComponent {
   members: any[] = [];
   employees: any[] = [];
 
-  columns: String[] = ['Id', 'Name', 'Phone', 'Email', 'Role', 'Actions'];
+  columns: String[] = ['Name', 'Phone', 'Email', 'Position', 'Department', 'Actions'];
   statuses: any[] = [
     {value: 'PLANNED', label: 'Planned'},
     {value: 'IN_PROGRESS', label: 'In Progress'},
@@ -33,6 +33,7 @@ export class ProjectDetailComponent {
 
   constructor(
     private projectService: ProjectService,
+    private employeeService: EmployeeService,
     private toastService: ToastService
   ) { }
 
@@ -57,7 +58,7 @@ export class ProjectDetailComponent {
   }
 
   loadMemberTable() {
-    this.projectService.getMembers(this.project.id).subscribe({
+    this.employeeService.findEmployeesInProject(this.project.id).subscribe({
       next: (res) => {
         this.members = res.map((employee: any) => {
           return {
@@ -74,7 +75,7 @@ export class ProjectDetailComponent {
   }
 
   loadOtherEmployees() {
-    this.projectService.getNotMembers(this.project.id).subscribe({
+    this.employeeService.findEmployeesNotInProject(this.project.id).subscribe({
       next: (res) => {
         this.employees = res.map((employee: any) => {
           return {
@@ -135,7 +136,7 @@ export class ProjectDetailComponent {
   }
 
   setAsLeader(employeeId: number) {
-    this.projectService.setAsLeader(this.project.id, employeeId).subscribe({
+    this.projectService.chooseLeader(this.project.id, employeeId).subscribe({
       next: (res) => {
         if (res) {
           this.toastService.showToast("Set this member as leader successfully", "success");

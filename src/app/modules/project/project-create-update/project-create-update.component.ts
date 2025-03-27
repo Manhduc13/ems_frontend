@@ -14,19 +14,18 @@ import { ToastService } from '../../../services/toast/toast.service';
 })
 export class ProjectCreateUpdateComponent {
 
-  @Input() project: any = null;
+  @Input() project: { 
+    id?: number;
+    name: string; 
+    description?: string; 
+    startDate: string;
+    budget: number;
+  } | null = null;
+
   @Output() close = new EventEmitter<void>();
   @Output() refresh = new EventEmitter<void>();
 
   createUpdateForm!: FormGroup;
-  statuses: any[] = [
-    { value: "PLANNED", name: 'Planned' },
-    { value: "IN_PROGRESS", name: 'In Progress' },
-    { value: "COMPLETED", name: 'Completed' },
-    { value: "ON_HOLD", name: 'On Hold' },
-    { value: "CANCELLED", name: 'Cancelled' },
-  ]
-
   isLoading: boolean = false;
 
   constructor(
@@ -39,35 +38,41 @@ export class ProjectCreateUpdateComponent {
     this.initializeForm();
   }
 
-  initializeForm() {
-    this.createUpdateForm = this.fb.group({
-      name: [this.project?.name || null, Validators.required],
-      description: [this.project?.description || null],
-      startDate: [this.project?.startDate || null, Validators.required],
-      budget: [this.project?.budget || null, Validators.required],
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['project']) {
       this.initializeForm();
     }
   }
 
+  initializeForm() {
+    this.createUpdateForm = this.fb.group({
+      name: [this.project?.name || null, Validators.required],
+      description: [this.project?.description || null],
+      startDate: [this.project?.startDate || null, [
+        Validators.required,
+        this.validateFutureOrPresentDate
+      ]],
+      budget: [this.project?.budget || null, [
+        Validators.required
+      ]],
+    });
+  }
+
   submitForm() {
-    if (this.createUpdateForm.valid) {
-      this.isLoading = true;
-      this.saveProject(this.createUpdateForm.value);
-    } else {
+    if (this.createUpdateForm.invalid) {
       this.toastService.showToast("Please fill in all required fields", "error");
-      this.isLoading = false;
+      return;
     }
+
+    this.isLoading = true;
+    const projectData = this.createUpdateForm.value;
+    this.saveProject(projectData);
   }
 
   saveProject(projectData: any) {
-    if (this.project) {
+    if (this.project?.id) {
       this.projectService.update(this.project.id, projectData).subscribe({
-        next: (res) => {
+        next: () => {
           this.toastService.showToast("Project updated successfully", "success");
           this.refresh.emit();
           this.close.emit();
@@ -81,7 +86,7 @@ export class ProjectCreateUpdateComponent {
       });
     } else {
       this.projectService.create(projectData).subscribe({
-        next: (res) => {
+        next: () => {
           this.toastService.showToast("Project created successfully", "success");
           this.refresh.emit();
           this.close.emit();
@@ -96,5 +101,14 @@ export class ProjectCreateUpdateComponent {
     }
   }
 
+  validateFutureOrPresentDate(control: any) {
+    const inputDate = new Date(control.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    if (inputDate < today) {
+      return { pastDate: true };
+    }
+    return null;
+  }
 }

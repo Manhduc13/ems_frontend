@@ -81,9 +81,8 @@
 
     <!-- Modal for Create/Update -->
     <div *ngIf="isCreateUpdateModalOpen"
-        class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18"
-        (click)="closeCreateUpdateModal()">
-        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto h-[85vh]">
+        class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18">
+        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto max-h-[85vh]">
             <app-employee-create-update [employee]="selectedEmployee" (close)="closeCreateUpdateModal()"
                 (refresh)="search()">
             </app-employee-create-update>
@@ -91,9 +90,8 @@
     </div>
 
     <!-- Modal for Detail -->
-    <div *ngIf="isDetailModalOpen" class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18"
-        (click)="closeDetailModal()">
-        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto h-[85vh]">
+    <div *ngIf="isDetailModalOpen" class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-50 mt-18">
+        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto max-h-[85vh]">
             <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailModal()" (refresh)="search()">
             </app-employee-detail>
         </div>
