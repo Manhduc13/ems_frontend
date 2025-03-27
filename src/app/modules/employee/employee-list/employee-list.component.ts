@@ -19,9 +19,9 @@ import { StorageService } from '../../../services/storage/storage.service';
 export class EmployeeListComponent {
   employees: any;
 
-  showCreateUpdateForm: boolean = false;
-  showDetailPage: boolean = false;
   selectedEmployee: any = null;
+  isCreateUpdateModalOpen = false;
+  isDetailModalOpen = false;
 
   keyword: any;
   page: number = 0;
@@ -31,9 +31,6 @@ export class EmployeeListComponent {
   searchForm!: FormGroup;
 
   columns: String[] = ['No', 'Name', 'Phone', 'Email', 'Position', 'Department', 'Status', 'Actions'];
-
-  @ViewChild('createUpdateForm') createUpdateForm!: ElementRef;
-  @ViewChild('detailForm') detailForm!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -100,59 +97,30 @@ export class EmployeeListComponent {
     this.search();
   }
 
-  viewDetail(employee: any) {
-    this.selectedEmployee = employee;
-    this.showCreateUpdateForm = false;
-    this.showDetailPage = true;
-
-    setTimeout(() => {
-      this.scrollToForm();
-    }, 100);
+  openCreateUpdateModal(employee?: any) {
+    this.selectedEmployee = employee || null;
+    this.isCreateUpdateModalOpen = true;
   }
 
-  closeDetailPage() {
-    this.showDetailPage = false;
-  }
-
-  toCreateForm() {
+  closeCreateUpdateModal() {
+    this.isCreateUpdateModalOpen = false;
     this.selectedEmployee = null;
-    this.showDetailPage = false;
-    this.showCreateUpdateForm = true;
-
-    setTimeout(() => {
-      this.scrollToForm();
-    }, 100);
   }
 
-  toEditForm(employee: any) {
+  openDetailModal(employee: any) {
     this.selectedEmployee = employee;
-    console.log(employee);
-
-    this.showDetailPage = false;
-    this.showCreateUpdateForm = true;
-
-    setTimeout(() => {
-      this.scrollToForm();
-    }, 100);
+    this.isCreateUpdateModalOpen = false;
+    this.isDetailModalOpen = true;
   }
 
-  scrollToForm() {
-    if (this.createUpdateForm) {
-      this.createUpdateForm.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    if (this.detailForm) {
-      this.detailForm.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  closeForm() {
-    this.showCreateUpdateForm = false;
+  closeDetailModal() {
+    this.isDetailModalOpen = false;
   }
 
   delete(id: number) {
     this.employeeService.delete(id).subscribe({
       next: (res) => {
-        if (res.deleted) {
+        if (res.result) {
           this.toastService.showToast("Delete employee successfully", "success");
           this.search();
         } else {
@@ -161,7 +129,6 @@ export class EmployeeListComponent {
       },
       error: (err) => {
         if (err.status === 400) {
-          //alert("Cannot delete this employee because it is referenced in a project");
           this.toastService.showToast("Cannot delete this employee because it is referenced in a project", "error");
         } else {
           this.toastService.showToast("An unexpected error occurred", "error");

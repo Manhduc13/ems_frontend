@@ -15,7 +15,7 @@ export class EmployeeDetailComponent {
   @Output() close = new EventEmitter<void>();
   @Output() refresh = new EventEmitter<void>();
 
-  currentStatus: Boolean = false;
+  currentStatus: boolean = false;
 
   constructor(
     private toastService: ToastService,
@@ -23,19 +23,25 @@ export class EmployeeDetailComponent {
   ) { }
 
   ngOnInit() {
-    if(this.employee) {
+    if (this.employee) {
       this.currentStatus = this.employee.active;
     }
   }
 
   changeStatus() {
-    this.employeeService.changeStatus(this.employee.id).subscribe((res) => {
-      if(res.changed){
-        this.currentStatus = !this.currentStatus;
-        this.toastService.showToast('Employee status updated successfully', 'success');
-        this.refresh.emit();
-      } else {
-        this.toastService.showToast('You can not update admin status', 'error');
+    this.employeeService.changeStatus(this.employee.id).subscribe({
+      next: (res) => {
+        if (res.result) {
+          this.currentStatus = !this.currentStatus;
+          this.toastService.showToast('Employee status updated successfully', 'success');
+          this.refresh.emit();
+        } else {
+          this.toastService.showToast('You can not change admin status', 'error');
+        }
+      },
+      error: (err) => {
+        console.log("Change status failed: ", err);
+        this.toastService.showToast('Employee status update failed', 'error');
       }
     })
   }

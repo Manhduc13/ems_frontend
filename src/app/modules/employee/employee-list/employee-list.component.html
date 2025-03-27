@@ -3,88 +3,98 @@
     <div class="action py-4 flex flex-row justify-between items-center">
         <form [formGroup]="searchForm" class="flex relative rounded-md w-full max-w-xl" (ngSubmit)="search()">
             <input type="text" formControlName="keyword" placeholder="Enter keyword"
-                class="w-full p-2 rounded-md border border-gray-300 placeholder-gray-500 text-white" />
+                class="w-full p-2 rounded-md border border-gray-600 bg-gray-700 text-white placeholder-gray-400" />
             <button type="submit"
-                class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white text-lg font-semibold px-6">
+                class="bg-blue-500 hover:bg-blue-700 text-white text-lg font-semibold px-4 py-2 rounded-md ml-2">
                 Search
             </button>
             <button type="button" (click)="reset()"
-                class="inline-flex items-center gap-2 bg-slate-500 hover:bg-slate-700 text-white text-lg font-semibold px-6 rounded-r-md">
+                class="bg-gray-500 hover:bg-gray-700 text-white text-lg font-semibold px-4 py-2 rounded-md ml-2">
                 Reset
             </button>
         </form>
 
         <div class="flex flex-row space-x-3">
-            <button class="bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors p-2"
+            <button
+                class="bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-md transition-colors px-4 py-2"
                 (click)="generateReport()">
                 Generate Report
             </button>
 
-            <button class="bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors p-2"
-                (click)="toCreateForm()">
+            <button
+                class="bg-green-600 hover:bg-green-700 text-white font-medium rounded-md transition-colors px-4 py-2"
+                (click)="openCreateUpdateModal()">
                 New Employee
             </button>
         </div>
     </div>
+
     <!-- Table -->
-    <table class="min-w-full divide-y divide-gray-200 overflow-x-auto">
-        <thead class="bg-gray-700">
-            <tr class="*:px-6 *:py-3 *:text-left *:text-xs *:font-medium *:text-white *:uppercase *:tracking-wider">
-                <th *ngFor="let column of columns">{{column}}</th>
-            </tr>
-        </thead>
-        <tbody class=" divide-y divide-gray-200 bg-gray-600">
-            <tr *ngFor="let employee of employees; let i = index"
-                class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
-                <td>{{ page * size + i + 1 }}</td>
-                <td>
-                    <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-600">
+            <thead class="bg-gray-700">
+                <tr class="*:px-6 *:py-3 *:text-left *:text-xs *:font-medium *:text-white *:uppercase">
+                    <th *ngFor="let column of columns">{{column}}</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-600 bg-gray-700">
+                <tr *ngFor="let employee of employees; let i = index"
+                    class="*:px-6 *:py-4 *:whitespace-nowrap *:text-white">
+                    <td>{{ page * size + i + 1 }}</td>
+                    <td>
+                        <div class="flex items-center">
                             <img class="h-10 w-10 rounded-full" [src]="employee.processedAvatar" alt="avatar">
-                        </div>
-                        <div class="ml-4">
-                            <div class="text-sm font-medium">
-                                {{employee.username}}
-                            </div>
-                            <div class="text-xs">
-                                {{employee.firstName}} {{employee.lastName}}
+                            <div class="ml-4">
+                                <div class="text-sm font-medium">{{ employee.username }}</div>
+                                <div class="text-xs">{{ employee.firstName }} {{ employee.lastName }}</div>
                             </div>
                         </div>
-                    </div>
-                </td>
-                <td>{{ employee.phone }}</td>
-                <td>{{ employee.email }}</td>
-                <td class="lowercase">
-                    <span>{{ employee.position }}</span>
-                </td>
-                <td>{{ employee.department }}</td>
-                <td>
-                    <span class="px-2.5 py-2 inline-flex rounded-full text-white"
-                        [ngClass]="employee.active ? 'bg-green-600 text-green-800' : 'bg-red-600 text-red-800'">
-                        {{ employee.active ? 'Active' : 'Inactive' }}
-                    </span>
-                </td>
-                <td class="space-x-3">
-                    <i class="fas fa-eye text-green-500 hover:text-green-700" (click)="viewDetail(employee)"></i>
-                    <i class="fas fa-edit text-blue-600 hover:text-blue-900" (click)="toEditForm(employee)"></i>
-                    <i class="fas fa-trash text-red-600 hover:text-red-900" (click)="delete(employee.id)"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <!-- Paginantion -->
-    <app-pagination [page]="page" [size]="size" [totalPages]="pageInfo?.totalPages" [totalElements]="pageInfo?.totalElements" (pageChange)="changePage($event)"
+                    </td>
+                    <td>{{ employee.phone }}</td>
+                    <td>{{ employee.email }}</td>
+                    <td class="lowercase">{{ employee.position }}</td>
+                    <td>{{ employee.department }}</td>
+                    <td>
+                        <span class="px-3 py-1 rounded-full text-white text-xs font-medium"
+                            [ngClass]="employee.active ? 'bg-green-500' : 'bg-red-500'">
+                            {{ employee.active ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td class="space-x-3">
+                        <i class="fas fa-eye text-green-500 hover:text-green-700"
+                            (click)="openDetailModal(employee)"></i>
+                        <i class="fas fa-edit text-blue-600 hover:text-blue-900"
+                            (click)="openCreateUpdateModal(employee)"></i>
+                        <i class="fas fa-trash text-red-600 hover:text-red-900" (click)="delete(employee.id)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <app-pagination [page]=" page" [size]="size" [totalPages]="pageInfo?.totalPages"
+        [totalElements]="pageInfo?.totalElements" (pageChange)="changePage($event)"
         (sizeChange)="changePageSize($event)">
     </app-pagination>
 
-    <!-- Create/Update -->
-    <div *ngIf="showCreateUpdateForm" class="mt-6" #createUpdateForm>
-        <app-employee-create-update [employee]="selectedEmployee" (close)="closeForm()" (refresh)="search()">
-        </app-employee-create-update>
+    <!-- Modal for Create/Update -->
+    <div *ngIf="isCreateUpdateModalOpen"
+        class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-10 mt-18"
+        (click)="closeCreateUpdateModal()">
+        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto h-[85vh]">
+            <app-employee-create-update [employee]="selectedEmployee" (close)="closeCreateUpdateModal()"
+                (refresh)="search()">
+            </app-employee-create-update>
+        </div>
     </div>
-    <!--View Employee Detail -->
-    <div *ngIf="showDetailPage" class="mt-6" #detailForm>
-        <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailPage()"
-            (refresh)="search()"></app-employee-detail>
+
+    <!-- Modal for Detail -->
+    <div *ngIf="isDetailModalOpen" class="fixed inset-0 bg-gray-400/25  flex justify-center items-center z-10 mt-18"
+        (click)="closeDetailModal()">
+        <div class="bg-gray-800 text-white p-6 rounded-lg w-4/5 relative overflow-y-auto h-[85vh]">
+            <app-employee-detail [employee]="selectedEmployee" (close)="closeDetailModal()" (refresh)="search()">
+            </app-employee-detail>
+        </div>
     </div>
 </div>
