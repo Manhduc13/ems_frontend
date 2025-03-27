@@ -15,7 +15,10 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: 
   const token = storageService.getToken();
 
   const excludedUrls = [
-    'http://localhost:8080/api/auth'
+    'http://localhost:8080/api/auth',
+    'http://localhost:8080/api/departments',
+    'http://localhost:8080/api/resetPassword',
+    'http://localhost:8080/api/cloudinary'
   ];
 
   if (excludedUrls.some(url => req.url.startsWith(url))) {
