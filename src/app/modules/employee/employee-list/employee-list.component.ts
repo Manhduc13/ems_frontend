@@ -22,6 +22,8 @@ export class EmployeeListComponent {
   selectedEmployee: any = null;
   isCreateUpdateModalOpen = false;
   isDetailModalOpen = false;
+  isDeleteModalOpen = false;
+  selectedEmployeeId: number | null = null;
 
   keyword: any;
   page: number = 0;
@@ -117,8 +119,20 @@ export class EmployeeListComponent {
     this.isDetailModalOpen = false;
   }
 
-  delete(id: number) {
-    this.employeeService.delete(id).subscribe({
+  openConfirmDeleteModal(employeeId: number) {
+    this.selectedEmployeeId = employeeId;
+    this.isDeleteModalOpen = true;
+  }
+
+  closeConfirmDeleteModal() {
+    this.isDeleteModalOpen = false;
+    this.selectedEmployeeId = null;
+  }
+
+  deleteEmployee() {
+    if (this.selectedEmployeeId === null) return;
+
+    this.employeeService.delete(this.selectedEmployeeId).subscribe({
       next: (res) => {
         if (res.result) {
           this.toastService.showToast("Delete employee successfully", "success");
@@ -126,6 +140,7 @@ export class EmployeeListComponent {
         } else {
           this.toastService.showToast("Delete employee failed", "error");
         }
+        this.closeConfirmDeleteModal();
       },
       error: (err) => {
         if (err.status === 400) {
@@ -133,6 +148,7 @@ export class EmployeeListComponent {
         } else {
           this.toastService.showToast("An unexpected error occurred", "error");
         }
+        this.closeConfirmDeleteModal();
       }
     });
   }

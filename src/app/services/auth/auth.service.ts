@@ -14,7 +14,6 @@ export class AuthService {
 
   constructor(private http: HttpClient,
     private storageService: StorageService,
-    private toastService: ToastService
   ) { }
 
   login(loginRequest: any): Observable<any> {

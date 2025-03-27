@@ -42,14 +42,21 @@ export class AppComponent {
   ngOnInit() {
     this.authService.getIsLoggedIn().subscribe((res) => {
       this.isLogin = res;
-      const username = this.storageService.getUsernameFromToken();
-      this.currentUser = this.employeeService.getByUsername(username).subscribe((res) => {
-        this.currentUser = res;
-      });
+      this.currentUser = this.loadUserInfo();
     });
-
     this.isAuthenticated();
+  }
 
+  loadUserInfo() {
+    const username = this.storageService.getUsernameFromToken();
+      this.currentUser = this.employeeService.getByUsername(username).subscribe({
+        next: (res) => {
+          this.currentUser = res;
+        }, 
+        error: (err) => {
+          console.log(err);
+        }
+      });
   }
 
   logout() {
